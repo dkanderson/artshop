@@ -1,0 +1,28 @@
+/*
+----------------------------------------------------------
+Author: Duane K. Anderson;
+url: http://dkanderson.net;
+Description: Art Store;
+==========================================================
+*/
+.branding svg {
+  margin-top: 15px;
+  width: 60px;
+  height: 60px;
+  margin-bottom: 15px;
+  -webkit-transition: all 5 ease;
+  -o-transition: all 5 ease;
+  transition: all 5 ease;
+}
+.ring,
+.dee {
+  fill: #000;
+}
+.blob {
+  fill: none;
+}
+body {
+  background: yellow;
+}
+
+/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIm1haW4uY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBOzs7Ozs7RUFNRTtBQUNGO0VBQ0UsaUJBQWlCO0VBQ2pCLFlBQVk7RUFDWixhQUFhO0VBQ2Isb0JBQW9CO0VBQ3BCLCtCQUErQjtFQUMvQiwwQkFBMEI7RUFDMUIsdUJBQXVCO0NBQ3hCO0FBQ0Q7O0VBRUUsV0FBVztDQUNaO0FBQ0Q7RUFDRSxXQUFXO0NBQ1o7QUFDRDtFQUNFLG1CQUFtQjtDQUNwQiIsImZpbGUiOiJtYWluLmNzcyIsInNvdXJjZXNDb250ZW50IjpbIi8qXG4tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tXG5BdXRob3I6IER1YW5lIEsuIEFuZGVyc29uO1xudXJsOiBodHRwOi8vZGthbmRlcnNvbi5uZXQ7XG5EZXNjcmlwdGlvbjogQXJ0IFN0b3JlO1xuPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PVxuKi9cbi5icmFuZGluZyBzdmcge1xuICBtYXJnaW4tdG9wOiAxNXB4O1xuICB3aWR0aDogNjBweDtcbiAgaGVpZ2h0OiA2MHB4O1xuICBtYXJnaW4tYm90dG9tOiAxNXB4O1xuICAtd2Via2l0LXRyYW5zaXRpb246IGFsbCA1IGVhc2U7XG4gIC1vLXRyYW5zaXRpb246IGFsbCA1IGVhc2U7XG4gIHRyYW5zaXRpb246IGFsbCA1IGVhc2U7XG59XG4ucmluZyxcbi5kZWUge1xuICBmaWxsOiAjMDAwO1xufVxuLmJsb2Ige1xuICBmaWxsOiBub25lO1xufVxuYm9keSB7XG4gIGJhY2tncm91bmQ6IHllbGxvdztcbn1cbiJdfQ== */
