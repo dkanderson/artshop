@@ -11,6 +11,9 @@
   "description": "",
   "devDependencies": {
     "axios": "^0.18.0",
+    "body-parser": "^1.18.3",
+    "dotenv": "^6.2.0",
+    "express": "^4.16.4",
     "grunt": "^1.0.3",
     "grunt-autoprefixer": "^3.0.4",
     "grunt-babel": "^8.0.0",
@@ -20,9 +23,13 @@
     "grunt-contrib-less": "^2.0.0",
     "grunt-contrib-uglify": "^4.0.0",
     "grunt-contrib-watch": "^1.1.0",
+    "handlebars": "^4.0.12",
+    "jquery": "^3.3.1",
+    "jquery.cookie": "^1.4.1",
     "less-plugin-autoprefix": "^2.0.0",
     "less-plugin-clean-css": "^1.5.1",
     "load-grunt-tasks": "^4.0.0",
-    "time-grunt": "^2.0.0"
+    "time-grunt": "^2.0.0",
+    "vanilla-router": "^1.2.7"
   }
 }
