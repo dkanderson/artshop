@@ -1,0 +1,22 @@
+{
+	"artwork": [
+		{
+			"id": 1,
+			"title": "Nicole",
+			"satus": "work in progress",
+			"medium": "Acrylic on canvas",
+			"subject": "Nicole Kidman",
+			"type": "Black and white portrait",
+			"size": "24\" x 18\"",
+			"url": "nicole.jpg",
+			"price": 5000
+		}
+	],
+	"users": [
+		{
+			"id": 1,
+			"username": "dkanderson",
+			"passwrod": "password"
+		}
+	]
+}

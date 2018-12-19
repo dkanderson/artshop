@@ -5,6 +5,9 @@ window.addEventListener('load', () => {
 	const bannerTemplate = Handlebars.compile($('#banner').html());
 	const homeContentTemplate = Handlebars.compile($('#home-content').html());
 	const errorTemplate = Handlebars.compile($('#errorTemplate').html());
+	const aboutTemplate = Handlebars.compile($('#about').html());
+	const storeTemplate = Handlebars.compile($('#store').html());
+	const contactTemplate = Handlebars.compile($('#contact').html());
 
 	const router = new Router({
 		mode: 'history',
@@ -19,8 +22,48 @@ window.addEventListener('load', () => {
 		},
 	});
 
-	router.add('/', () => {
+	const api = axios.create({
+		baseURL: 'http://localhost:3000/api',
+		timeout: 5000,
+	});
+
+	// Display error
+	const showError = (error) => {
+		const { title, message } = error.response.data;
+		const html = errorTemplate({class: "sdds", title, message});
+		el.html(html);
+	}
+
+	//Display Artwork
+	router.add('/', async() => {
 		let html = bannerTemplate();
+		el.html(html);
+
+		try{
+			const response = await api.get('/artwork');
+			const artwork = response.data;
+
+			html = bannerTemplate(artwork);
+			el.html(html);
+		} catch (error) {
+			showError(error);
+		} finally {
+			console.log('loaded');
+		}
+	})
+
+	router.add('/about', () => {
+		let html = aboutTemplate();
+		el.html(html);
+	});
+
+	router.add('/store', () => {
+		let html = storeTemplate();
+		el.html(html);
+	});
+
+	router.add('/contact', () => {
+		let html = contactTemplate();
 		el.html(html);
 	});
 

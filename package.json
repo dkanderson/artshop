@@ -26,6 +26,7 @@
     "handlebars": "^4.0.12",
     "jquery": "^3.3.1",
     "jquery.cookie": "^1.4.1",
+    "json-server": "^0.14.0",
     "less-plugin-autoprefix": "^2.0.0",
     "less-plugin-clean-css": "^1.5.1",
     "load-grunt-tasks": "^4.0.0",

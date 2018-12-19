@@ -52,6 +52,15 @@
 			<div class="banner">
 				<img src="src/img/bedroom.jpg" alt="bedroom">
 			</div>
+			<div>
+				<ul>
+					<li>
+						<span>{{title}}</span>
+						<img src="../lib/artwork/{{url}}" alt="">
+						<a href="/buy">{{price}}</a>
+					</li>
+				</ul>
+			</div>
 		</script> 
 
 		<!-- Template: home page content list -->
@@ -82,7 +91,10 @@
 
 		<!-- Error Template -->
 		<script id="errorTemplate" type="text/x-handlebars-template">
-			<h1>{{title}}</h1>
+			<div class="{{class}}">
+				<h1>{{title}}</h1>
+				<p>{{message}}</p>
+			</div>
 		</script>
 
 		<div id="app"></div>
