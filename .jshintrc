@@ -4,7 +4,6 @@
   "curly": true,
   "eqeqeq": true,
   "eqnull": true,
-  "esnext": true,
   "immed": true,
   "jquery": true,
   "latedef": true,
@@ -12,5 +11,6 @@
   "noarg": true,
   "node": true,
   "strict": false,
-  "trailing": true
+  "trailing": true,
+  "esversion": 6
 }

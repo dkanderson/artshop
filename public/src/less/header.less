@@ -4,12 +4,17 @@
     fill: none;
 }
 
-.branding{
+.header{
 	background: #000;
+    .branding{
+        display: flex;
+        justify-content: space-between;
+    }   
 }
 
 .branding .logo-svg{
     margin-top:15px;
+    margin-left: 15px;
     width:60px;
     height:60px;
     margin-bottom: 15px;
@@ -18,7 +23,27 @@
     transition: all 5 ease;
 }
 
-.branding .cart-svg{
-	width: 20px;
-	height: 20px;
+.user-nav{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-right: 15px;
+    width: 80px;
+
+    .cart-svg{
+        width: 20px;
+        height: 20px;
+        order: 1;
+    }
+
+    .user-login {
+        order: -1;
+        .link{
+            color: #fff;
+            text-decoration: none;
+            &:hover{
+                text-decoration: underline;
+            }
+        }
+    }
 }

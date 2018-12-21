@@ -8,6 +8,7 @@ window.addEventListener('load', () => {
 	const aboutTemplate = Handlebars.compile($('#about').html());
 	const storeTemplate = Handlebars.compile($('#store').html());
 	const contactTemplate = Handlebars.compile($('#contact').html());
+	const addNewTemplate = Handlebars.compile($('#addNew').html());
 
 	const router = new Router({
 		mode: 'history',
@@ -32,10 +33,12 @@ window.addEventListener('load', () => {
 		const { title, message } = error.response.data;
 		const html = errorTemplate({class: "sdds", title, message});
 		el.html(html);
-	}
+	};
 
 	//Display Artwork
-	router.add('/', async() => {
+	/* jshint ignore:start */
+	router.add( '/', async() => {
+		
 		let html = bannerTemplate();
 		el.html(html);
 
@@ -45,12 +48,18 @@ window.addEventListener('load', () => {
 
 			html = bannerTemplate(artwork);
 			el.html(html);
+
 		} catch (error) {
+			
 			showError(error);
+
 		} finally {
+
 			console.log('loaded');
+			
 		}
-	})
+	});
+	/* jshint ignore:end */
 
 	router.add('/about', () => {
 		let html = aboutTemplate();
@@ -66,6 +75,61 @@ window.addEventListener('load', () => {
 		let html = contactTemplate();
 		el.html(html);
 	});
+
+	// Perform POST request and update page
+	/* jshint ignore:start */
+	const addNewArtwork = async() => {
+		const formData = {
+			title: $("#title").val(),
+			status: $('#status').val(),
+			medium: $('#medium').val(),
+			subject: $('#subject').val(),
+			type: $('#type').val(),
+			size: $('#size').val(),
+			orientation: $('#orientation').val(),
+			price: $('#price').val(),
+			url: $('#url').val()
+		}
+
+		try {
+			
+			const response = await api.post('/addnew', formData);
+			
+			if(response.statusText === 'created'){
+				alert('Success!');
+			}
+
+		} catch (error) {
+			
+			showError(error);
+		}
+	};
+	/* jshint ignore:end */
+
+	const submitHandler = () => {
+		addNewArtwork();
+		return false;
+	};
+
+	router.add('/add', () => {
+		
+		let html = addNewTemplate();
+		el.html(html);
+
+		try{
+		// $('.form.add-new').form({
+		// 	fields: {
+
+		// 	}
+		// })
+
+		$('.form-submit').click(submitHandler);
+
+		} catch (error) {
+			showError(error);
+		}	 
+	});
+	
 
 	// Navigate to current url
 	router.navigateTo(window.location.pathname);

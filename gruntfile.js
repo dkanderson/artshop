@@ -20,8 +20,10 @@ module.exports = function (grunt) {
         jshintrc: '.jshintrc'
       },
       all: [
-          'Gruntfile.js',
-          'public/src/js/*.js'
+          'gruntfile.js',
+          'public/src/js/*.js',
+          'lib/*.js',
+          'server.js'
       ]
     },
     
@@ -87,11 +89,11 @@ module.exports = function (grunt) {
         }
     },
     watch: {
-      cssmin: {
+      less: {
         files: [
-          'public/src/css/*.css'
+          'public/src/less/*.less'
         ],
-        tasks: ['cssmin', 'autoprefixer:dev']
+        tasks: ['less:development', ]
       },
       js: {
         files: [
@@ -99,13 +101,13 @@ module.exports = function (grunt) {
           'public/src/js/_*.js',
           '<%= jshint.all %>'
         ],
-        tasks: ['jshint', 'concat']
+        tasks: ['jshint',]
       },
       livereload: {
         // Browser live reloading
         // https://github.com/gruntjs/grunt-contrib-watch#live-reloading
         options: {
-          livereload: false
+          livereload: true
         },
         files: [
           'public/src/css/main.css',

@@ -10,7 +10,7 @@
 <body>
 	
 	<div class="container">
-		<header>
+		<header class="header">
 			 <div class="branding">
 			 	<a class="branding" href="<?php echo esc_url(home_url('/')); ?>">
                 	<svg class="logo-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 90 612 612">
@@ -18,47 +18,47 @@
                 		<path class="dee" d="M392.651 478.706c-4.553 13.965-11.532 25.888-20.944 35.751c-9.412 9.867-21.478 17.457-36.21 22.7 c-14.729 5.279-32.556 7.973-53.507 7.973c-20.039 0-37.047-2.659-51-7.973c-13.965-5.311-25.501-12.91-34.608-22.773 c-9.107-9.86-15.937-21.776-20.49-35.752c-4.553-13.952-7.135-29.746-7.733-47.355c0.598-17.604 3.18-33.547 7.733-47.82 c4.553-14.264 11.383-26.482 20.49-36.661c9.11-10.169 20.643-18.058 34.608-23.68c13.953-5.619 30.961-8.425 51-8.425 c13.667 0 25.9 1.6 36.1 4.781c10.465 3.1 20.2 6.9 29 11.153l-2.205-127.502h55.479c0 17.4 0 34.9 0 52.9 c0 18.1 0 35.2 0 51.913c0 16.8 0 32.4 0 47.356c0 14.6 0 27.4 0 38.713c0 11.2 0 20.2 0 26.9 c0 6.5 0 10.3 0 10.589c-0.576 17.42-3.152 33.301-7.824 47.157H392.651z M343.474 385.1 c-3.046-10.474-7.362-18.971-12.975-25.502c-5.628-6.528-12.387-11.225-20.272-14.118c-7.893-2.878-16.544-4.167-25.959-3.868 c-9.409-0.299-18.064 0.912-25.957 3.734c-7.892 2.738-14.647 7.366-20.266 13.894c-5.622 6.531-9.938 15.108-12.975 25.7 c-3.04 10.63-4.554 23.533-4.554 38.707v15.938c0 15.3 1.6 28 4.7 38.252c3.034 10.3 7.5 18.4 13.1 24.6 c5.619 6.2 12.5 10.3 20.2 12.772c7.892 2.5 16.5 3.4 25.9 3.18c9.409 0.3 18.064-0.832 25.959-3.414 c7.886-2.578 14.645-6.907 20.269-12.98c5.616-6.067 9.933-14.196 12.976-24.362c3.036-10.169 4.553-22.838 4.553-38.024v-15.938 c-0.093-15.232-1.682-28.002-4.796-38.585h0.149V385.127z"/>
                 	</svg>
             	</a>
-            	<div class="cart">
-            		<a href="" class="shopping-cart">
-            			<i class="cart-icon">
-            				<svg class="cart-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" width="512px" height="512px" viewBox="0 0 497.023 497.022" style="enable-background:new 0 0 497.023 497.022;" xml:space="preserve">
-						<g>
-							<path d="M493.861,99.578c-2.716-3.389-6.833-5.362-11.173-5.362H135.03c-0.119,0-0.229,0.035-0.343,0.035   C107.159,43.323,50.15,23.15,15.735,19.778C7.836,18.999,0.837,24.767,0.07,32.647c-0.774,7.88,4.989,14.897,12.87,15.665   c4.445,0.446,108.925,11.843,108.925,112.386c0,13.28,0.138,26.43,0.556,39.351c0,0.1-0.031,0.191-0.031,0.292   c0,0.177,0.049,0.345,0.054,0.52c2.098,63.249,11.565,120.794,50.911,159.04c8.296,8.069,17.644,14.916,27.995,20.657   c-14.031,9.18-23.335,25.006-23.335,42.993c0,28.329,23.043,51.375,51.375,51.375c28.327,0,51.373-23.046,51.373-51.375   c0-8.037-1.899-15.616-5.199-22.393c7.962,0.667,16.223,1.035,24.856,1.035c3.352,0,6.759-0.056,10.212-0.148h30.448   c-3.771,7.145-5.937,15.266-5.937,23.895c0,28.33,23.046,51.376,51.375,51.376c28.334,0,51.375-23.046,51.375-51.376   c0-8.629-2.156-16.75-5.927-23.895h7.71c7.915,0,14.337-6.418,14.337-14.338s-6.422-14.337-14.337-14.337l-129.446,0.005   c-53.522,1.559-91.752-9.61-116.889-34.037c-9.596-9.325-17.023-20.424-22.815-32.875h271.54c6.721,0,12.545-4.677,13.996-11.243   l40.622-183.563C497.623,107.412,496.586,102.971,493.861,99.578z M229.394,446.251c-12.518,0-22.701-10.184-22.701-22.7   c0-12.518,10.183-22.701,22.701-22.701c12.517,0,22.7,10.184,22.7,22.701C252.094,436.067,241.911,446.251,229.394,446.251z    M386.528,448.641c-12.518,0-22.701-10.184-22.701-22.701c0-12.517,10.184-22.7,22.701-22.7c12.517,0,22.7,10.184,22.7,22.7   C409.228,438.457,399.044,448.641,386.528,448.641z M464.832,122.895l-13.964,63.108H150.74   c-0.143-8.354-0.201-16.792-0.201-25.305c0-13.817-1.697-26.357-4.665-37.804H464.832z M430.557,277.788H160.512   c-4.956-19.294-7.521-40.606-8.778-63.11H444.52L430.557,277.788z" fill="#FFFFFF"/>
-						</g>
-						</svg>
-            			</i>
-            		</a>
-            	</div>
-            	<div class="user-login">
-            		<a href="/signin">sign in</a>
-            	</div>
-			 </div>
-			 <!-- <div class="search">
-			 	<form action="">
-			 		<input type="text" class="search">
-			 		<button class="submit">go</button>
-			 	</form>
-			 </div> -->
+            	<div class="user-nav">
+	            	<div class="cart">
+	            		<a href="" class="shopping-cart">
+	            			<i class="cart-icon">
+	            				<svg class="cart-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" width="512px" height="512px" viewBox="0 0 497.023 497.022" style="enable-background:new 0 0 497.023 497.022;" xml:space="preserve">
+							<g>
+								<path d="M493.861,99.578c-2.716-3.389-6.833-5.362-11.173-5.362H135.03c-0.119,0-0.229,0.035-0.343,0.035   C107.159,43.323,50.15,23.15,15.735,19.778C7.836,18.999,0.837,24.767,0.07,32.647c-0.774,7.88,4.989,14.897,12.87,15.665   c4.445,0.446,108.925,11.843,108.925,112.386c0,13.28,0.138,26.43,0.556,39.351c0,0.1-0.031,0.191-0.031,0.292   c0,0.177,0.049,0.345,0.054,0.52c2.098,63.249,11.565,120.794,50.911,159.04c8.296,8.069,17.644,14.916,27.995,20.657   c-14.031,9.18-23.335,25.006-23.335,42.993c0,28.329,23.043,51.375,51.375,51.375c28.327,0,51.373-23.046,51.373-51.375   c0-8.037-1.899-15.616-5.199-22.393c7.962,0.667,16.223,1.035,24.856,1.035c3.352,0,6.759-0.056,10.212-0.148h30.448   c-3.771,7.145-5.937,15.266-5.937,23.895c0,28.33,23.046,51.376,51.375,51.376c28.334,0,51.375-23.046,51.375-51.376   c0-8.629-2.156-16.75-5.927-23.895h7.71c7.915,0,14.337-6.418,14.337-14.338s-6.422-14.337-14.337-14.337l-129.446,0.005   c-53.522,1.559-91.752-9.61-116.889-34.037c-9.596-9.325-17.023-20.424-22.815-32.875h271.54c6.721,0,12.545-4.677,13.996-11.243   l40.622-183.563C497.623,107.412,496.586,102.971,493.861,99.578z M229.394,446.251c-12.518,0-22.701-10.184-22.701-22.7   c0-12.518,10.183-22.701,22.701-22.701c12.517,0,22.7,10.184,22.7,22.701C252.094,436.067,241.911,446.251,229.394,446.251z    M386.528,448.641c-12.518,0-22.701-10.184-22.701-22.701c0-12.517,10.184-22.7,22.701-22.7c12.517,0,22.7,10.184,22.7,22.7   C409.228,438.457,399.044,448.641,386.528,448.641z M464.832,122.895l-13.964,63.108H150.74   c-0.143-8.354-0.201-16.792-0.201-25.305c0-13.817-1.697-26.357-4.665-37.804H464.832z M430.557,277.788H160.512   c-4.956-19.294-7.521-40.606-8.778-63.11H444.52L430.557,277.788z" fill="#FFFFFF"/>
+							</g>
+							</svg>
+	            			</i>
+	            		</a>
+	            	</div>
+	            	<div class="user-login">
+	            		<a class="link nav-link sign-in" href="/signin">sign in</a>
+	            	</div>
+	            </div>
+			</div>
+			 
 		</header>
 		<nav class="main-nav">
-			<a class="link" href="/">home</a>
-			<a class="link" href="/about">about</a>
-			<a class="link" href="/store">store</a>
-			<a class="link" href="/contact">contact</a>
+			<a class="link nav-link home" href="/">home</a>
+			<a class="link nav-linkabout" href="/about">about</a>
+			<a class="link nav-link store" href="/store">store</a>
+			<a class="link nav-link contact" href="/contact">contact</a>
+			<a href="/add" class="link">add new</a>
 		</nav>
 
 		<!-- Template for site banner -->
 		<script id="banner" type="text/x-handlebars-template">
 			<div class="banner">
-				<img src="src/img/bedroom.jpg" alt="bedroom">
+				<h1>Art Shop</h1>
 			</div>
 			<div>
-				<ul>
-					<li>
+				<ul class="art-list">
+					{{#each this}}
+					<li class="art-list-item {{url}}">
 						<span>{{title}}</span>
-						<img src="../lib/artwork/{{url}}" alt="">
+						<img src="artwork/{{url}}" alt="">
 						<a href="/buy">{{price}}</a>
 					</li>
+					{{/each}}
 				</ul>
 			</div>
 		</script> 
@@ -66,8 +66,8 @@
 		<!-- Template: home page content list -->
 		<script id="home-content" type="text/x-handlebars-template">
 			<div class="content">
-				<ul>
-					<li><img src="src/img/bedroom.jpg" alt=""></li>
+				<ul class="art-list">
+					<li class=""><img src="src/img/bedroom.jpg" alt=""></li>
 					<li><img src="src/img/bedroom.jpg" alt=""></li>
 					<li><img src="src/img/bedroom.jpg" alt=""></li>
 				</ul>
@@ -97,7 +97,53 @@
 			</div>
 		</script>
 
-		<div id="app"></div>
+		<!-- Add new artwork -->
+		<script id="addNew" type="x-handlebars-template">
+			<h2>Add a new piece of art work</h2>
+			<div class="form-wrapper">
+				<form class="form add-new">
+					<fieldset class="fieldset">
+						<label class="label" for="title">Artwork title:</label>
+						<input id="title" type="text" name="title" placeholder="Add artwork title">
+					</fieldset>
+					<fieldset class="fieldset">
+						<label class="label" for="status">Artwork status</label>
+						<input id="status" type="text" name="status" placeholder="Add artwork status">
+					</fieldset>
+					<fieldset class="fieldset">
+						<label class="label" for="medium">Artwork medium</label>
+						<input id="medium" type="text" name="medium" placeholder="Add artwork medium">
+					</fieldset>
+					<fieldset class="fieldset">
+						<label class="label" for="subject">Artwork subject</label>
+						<input id="subject" type="text" name="subject" placeholder="Add artwork subject">
+					</fieldset>
+					<fieldset class="fieldset">
+						<label class="label" for="type">Artwork type</label>
+						<input id="type" type="text" name="type" placeholder="Add artwork type">
+					</fieldset>
+					<fieldset class="fieldset">
+						<label class="label" for="size">Artwork size</label>
+						<input id="size" type="text" name="size" placeholder="Add artwork size">
+					</fieldset>
+					<fieldset class="fieldset">
+						<label class="label" for="orientation">Artwork orientation</label>
+						<input id="orientation" type="text" name="orientation" placeholder="Add artwork orientation">
+					</fieldset>
+					<fieldset class="fieldset">
+						<label class="label" for="price">Artwork price</label>
+						<input id="price" type="number" name="price" placeholder="0.00">
+					</fieldset>
+					<fieldset class="fieldset">
+						<label for="url"></label>
+						<input id="url" type="text" name="artwork" placeholder="Add file name">
+					</fieldset>
+					<button class="button form-submit">Add Artwork</button>
+				</form>
+			</div>
+		</script>
+
+		<div id="app" class="app-container"></div>
 		
 		
 		<footer>
