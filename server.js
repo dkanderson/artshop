@@ -43,15 +43,20 @@ app.get('/api/artwork', async (req, res) => {
 });
 
 app.post('/api/addnew', async (req, res) => {
-	console.log(req.body);
+	
 	try{
+		
 		const data = await addNewArtwork(req.body);
 		res.setHeader('Content-Type', 'application/json');
-		res.send(data);
+		res.send('Added successfully');
+
 	} catch ( error ) {
+		
 		errorHandler(error, req, res);
+
 	}
-})
+});
+
 /* jshint ignore:end */
 
 app.use((req, res) => res.sendFile(`${__dirname}/public/index.html`));

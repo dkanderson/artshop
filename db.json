@@ -34,52 +34,16 @@
       "price": 5000
     },
     {
-      "title": "test",
-      "id": 4
-    },
-    {
-      "id": 5
-    },
-    {
-      "id": 6
-    },
-    {
-      "id": 7
-    },
-    {
-      "id": 8
-    },
-    {
-      "id": 9
-    },
-    {
-      "id": 10
-    },
-    {
-      "id": 11
-    },
-    {
-      "id": 12
-    },
-    {
-      "title": "Lady in Red",
-      "id": 13
-    },
-    {
-      "title": "Lady in red",
-      "status": "completed",
-      "medium": "acrylic on canvas",
-      "subject": "sugar",
+      "title": "",
+      "status": "",
+      "medium": "",
+      "subject": "",
       "type": "",
       "size": "",
       "orientation": "",
       "price": "",
       "url": "",
-      "id": 14
-    },
-    {
-      "title": "Lady in Red",
-      "id": 15
+      "id": 4
     }
   ],
   "users": [

@@ -48,7 +48,7 @@
 		<!-- Template for site banner -->
 		<script id="banner" type="text/x-handlebars-template">
 			<div class="banner">
-				<h1>Art Shop</h1>
+				<h1 class="heading heading_one art-shop">Art Shop</h1>
 			</div>
 			<div>
 				<ul class="art-list">
@@ -99,46 +99,46 @@
 
 		<!-- Add new artwork -->
 		<script id="addNew" type="x-handlebars-template">
-			<h2>Add a new piece of art work</h2>
+			<h2 class="heading heading_two add-new">Add a new piece of art work</h2>
 			<div class="form-wrapper">
 				<form class="form add-new">
 					<fieldset class="fieldset">
 						<label class="label" for="title">Artwork title:</label>
-						<input id="title" type="text" name="title" placeholder="Add artwork title">
+						<input class="input input_text add-new" id="title" type="text" name="title" placeholder="Add artwork title">
 					</fieldset>
 					<fieldset class="fieldset">
 						<label class="label" for="status">Artwork status</label>
-						<input id="status" type="text" name="status" placeholder="Add artwork status">
+						<input class="input input_text add-new" id="status" type="text" name="status" placeholder="Add artwork status">
 					</fieldset>
 					<fieldset class="fieldset">
 						<label class="label" for="medium">Artwork medium</label>
-						<input id="medium" type="text" name="medium" placeholder="Add artwork medium">
+						<input class="input input_text add-new" id="medium" type="text" name="medium" placeholder="Add artwork medium">
 					</fieldset>
 					<fieldset class="fieldset">
 						<label class="label" for="subject">Artwork subject</label>
-						<input id="subject" type="text" name="subject" placeholder="Add artwork subject">
+						<input class="input input_text add-new" id="subject" type="text" name="subject" placeholder="Add artwork subject">
 					</fieldset>
 					<fieldset class="fieldset">
 						<label class="label" for="type">Artwork type</label>
-						<input id="type" type="text" name="type" placeholder="Add artwork type">
+						<input class="input input_text add-new" id="type" type="text" name="type" placeholder="Add artwork type">
 					</fieldset>
 					<fieldset class="fieldset">
 						<label class="label" for="size">Artwork size</label>
-						<input id="size" type="text" name="size" placeholder="Add artwork size">
+						<input class="input input_text add-new" id="size" type="text" name="size" placeholder="Add artwork size">
 					</fieldset>
 					<fieldset class="fieldset">
 						<label class="label" for="orientation">Artwork orientation</label>
-						<input id="orientation" type="text" name="orientation" placeholder="Add artwork orientation">
+						<input class="input input_text add-new" id="orientation" type="text" name="orientation" placeholder="Add artwork orientation">
 					</fieldset>
 					<fieldset class="fieldset">
 						<label class="label" for="price">Artwork price</label>
-						<input id="price" type="number" name="price" placeholder="0.00">
+						<input class="input input_text add-new" id="price" type="number" name="price" placeholder="0.00">
 					</fieldset>
 					<fieldset class="fieldset">
 						<label for="url"></label>
-						<input id="url" type="text" name="artwork" placeholder="Add file name">
+						<input class="input input_text add-new" id="url" type="text" name="artwork" placeholder="Add file name">
 					</fieldset>
-					<button class="button form-submit">Add Artwork</button>
+					<div class="button form-submit">Add Artwork</div>
 				</form>
 			</div>
 		</script>
@@ -146,8 +146,8 @@
 		<div id="app" class="app-container"></div>
 		
 		
-		<footer>
-			<span>&copy; All rights reserved 2018.</span>
+		<footer class="footer">
+			<span class="span copy">&copy; All rights reserved 2018.</span>
 		</footer>
 	</div>
 

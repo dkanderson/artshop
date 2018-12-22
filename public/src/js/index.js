@@ -10,6 +10,8 @@ window.addEventListener('load', () => {
 	const contactTemplate = Handlebars.compile($('#contact').html());
 	const addNewTemplate = Handlebars.compile($('#addNew').html());
 
+	var count = 0;
+
 	const router = new Router({
 		mode: 'history',
 		page404: (path) => {
@@ -89,13 +91,13 @@ window.addEventListener('load', () => {
 			orientation: $('#orientation').val(),
 			price: $('#price').val(),
 			url: $('#url').val()
-		}
+		};
 
 		try {
 			
 			const response = await api.post('/addnew', formData);
 			
-			if(response.statusText === 'created'){
+			if(response.statusText === 'OK'){
 				alert('Success!');
 			}
 
@@ -107,27 +109,20 @@ window.addEventListener('load', () => {
 	/* jshint ignore:end */
 
 	const submitHandler = () => {
-		addNewArtwork();
-		return false;
+			console.log(`called ${count += 1} times`);
+			addNewArtwork();
+			return false;
+					
 	};
 
 	router.add('/add', () => {
 		
 		let html = addNewTemplate();
 		el.html(html);
-
-		try{
-		// $('.form.add-new').form({
-		// 	fields: {
-
-		// 	}
-		// })
+			
 
 		$('.form-submit').click(submitHandler);
 
-		} catch (error) {
-			showError(error);
-		}	 
 	});
 	
 

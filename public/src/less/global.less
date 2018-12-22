@@ -48,6 +48,8 @@ p{
 
 .container {
 	display: grid;
+    height: 100vh;
+    grid-template-rows: 90px 40px 2fr 40px;
 }
 
 .main-nav{
@@ -66,15 +68,25 @@ img{
 	}
 }
 
-.form-wrapper{
-	width: 400px;
-	padding: 20px;
-	.fieldset{
-		display: block;
-		padding: 10px;
-		border: none;
-		.label{
-			display: block;
-		}
-	}
+
+.heading.heading_one{
+    font-size: 3em;
+    font-weight: 700;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.4);
+    &.art-shop{
+        width: 100%;
+        text-align: center;
+        height: 20vh;
+        line-height: 20vh;
+        background-color:  rgba(0,0,0,0.75);
+        color: #fff;
+    }
+}
+
+.heading.heading_two{
+    font-size: 2em;
+    font-weight: 400;
+    &.add-new{
+        margin: 20px 0 20px 20px;
+    }
 }
