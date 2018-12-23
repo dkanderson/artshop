@@ -2,6 +2,8 @@ require('dotenv').config();  //read env files
 
 const express = require('express');
 const jsonServer = require('json-server');
+const fileUpload = require('express-fileupload');
+
 const server = jsonServer.create();
 const router = jsonServer.router(`${__dirname}/db.json`);
 const middleware = jsonServer.defaults();
@@ -14,9 +16,11 @@ const port = process.env.PORT || 3000;
 const serverPort = process.env.SERVER_PORT || 3001;
 
 app.use(express.json());
+app.use(fileUpload());
 
 //Set public folder as root
 app.use(express.static('public'));
+app.use('/uploads', express.static(`${__dirname}/public/artwork/`));
 
 app.use('/scripts', express.static(`${__dirname}/node_modules/`));  //combine js files later
 
@@ -56,6 +60,38 @@ app.post('/api/addnew', async (req, res) => {
 
 	}
 });
+
+app.post('/api/upload', (req, res) => {
+
+	console.log(req.files);
+
+	if (Object.keys(req.files).length === 0) {
+
+		return res.status(400).send('No files uploaded. ');
+
+	}
+	
+	try {
+
+		let artworkFile = req.files.artwork;
+		artworkFile.mv(`${__dirname}/public/artwork/${req.files.artwork.name}`, err => {
+
+			if ( err )	{
+				return res.status( 500 ).send({title: 'An unexpected error occured', message: err.message});
+			} else {
+				res.send('File was uploaded successfully!');
+			}
+
+		});
+		
+
+	} catch ( error ) {
+
+		errorHandler(error, req, res);
+	}
+});
+
+
 
 /* jshint ignore:end */
 

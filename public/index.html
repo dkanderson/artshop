@@ -101,6 +101,13 @@
 		<script id="addNew" type="x-handlebars-template">
 			<h2 class="heading heading_two add-new">Add a new piece of art work</h2>
 			<div class="form-wrapper">
+				<form action="" class="form upload">
+					<input id="artworkFile" class="input input-file input-upload-artwork" name="artwork" type="file">
+					<button class="button button-upload-file button-upload-artwork">upload</button>
+				</form>
+			</div>
+			<figure id="figure" class="figure uploaded-image"></figure>
+			<div class="form-wrapper add-new-form-wrapper">
 				<form class="form add-new">
 					<fieldset class="fieldset">
 						<label class="label" for="title">Artwork title:</label>
@@ -134,13 +141,14 @@
 						<label class="label" for="price">Artwork price</label>
 						<input class="input input_text add-new" id="price" type="number" name="price" placeholder="0.00">
 					</fieldset>
-					<fieldset class="fieldset">
-						<label for="url"></label>
-						<input class="input input_text add-new" id="url" type="text" name="artwork" placeholder="Add file name">
-					</fieldset>
+					<input class="input input_hidden add-new" id="url" type="hidden" name="url">
 					<div class="button form-submit">Add Artwork</div>
 				</form>
 			</div>
+		</script>
+
+		<script id="uploadedImage" type="x-handlebars-template">
+			<img src="/uploads/{{imgUrl}}" alt="">
 		</script>
 
 		<div id="app" class="app-container"></div>

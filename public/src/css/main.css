@@ -627,3 +627,11 @@ img {
   margin: 20px 0;
   float: right;
 }
+.figure.uploaded-image {
+  max-width: 300px;
+}
+.figure.uploaded-image img {
+  width: 100%;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  padding: 20px;
+}

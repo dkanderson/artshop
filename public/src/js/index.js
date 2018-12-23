@@ -10,7 +10,8 @@ window.addEventListener('load', () => {
 	const contactTemplate = Handlebars.compile($('#contact').html());
 	const addNewTemplate = Handlebars.compile($('#addNew').html());
 
-	var count = 0;
+
+	const imgUrl = "";
 
 	const router = new Router({
 		mode: 'history',
@@ -29,6 +30,7 @@ window.addEventListener('load', () => {
 		baseURL: 'http://localhost:3000/api',
 		timeout: 5000,
 	});
+
 
 	// Display error
 	const showError = (error) => {
@@ -106,20 +108,61 @@ window.addEventListener('load', () => {
 			showError(error);
 		}
 	};
+
+	const uploadArtwork = async() => {
+
+		const figureTemplate = Handlebars.compile($('#uploadedImage').html());
+		const imgWrapper = $('#figure');
+		const artworkFile = $('#artworkFile')[0].files[0];
+		const fileData = new FormData();
+		
+		fileData.append("artwork", artworkFile);
+
+		try{
+
+			const uploadResponse = await api.post('/upload', fileData, {headers: {'Content-Type': 'multipart/form-data'}});
+			
+			if(uploadResponse.status === 200){
+				
+				$('.add-new-form-wrapper').show();
+				$('#url').val(artworkFile.name);
+				let html = figureTemplate({imgUrl: artworkFile.name});
+				imgWrapper.html(html);
+
+			}
+
+		} catch ( error ) {
+
+			showError ( error );
+		}
+	}
 	/* jshint ignore:end */
 
 	const submitHandler = () => {
-			console.log(`called ${count += 1} times`);
+
 			addNewArtwork();
 			return false;
 					
+	};
+
+	const uploadHandler = () => {
+		uploadArtwork();
 	};
 
 	router.add('/add', () => {
 		
 		let html = addNewTemplate();
 		el.html(html);
-			
+
+		$('.button-upload-artwork').on('click', (event) => {
+
+			event.preventDefault();
+
+			uploadHandler();
+
+		});
+		
+		$('.add-new-form-wrapper').hide();
 
 		$('.form-submit').click(submitHandler);
 
