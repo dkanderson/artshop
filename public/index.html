@@ -45,6 +45,7 @@
 			<a class="link nav-link contact" href="/contact">contact</a>
 			<a href="/add" class="link">add new</a>
 			<a href="/edit" class="link">edit</a>
+			<a href="/delete" class="link">delete</a>
 		</nav>
 
 		<!-- Template for site banner -->
@@ -127,7 +128,7 @@
 					<button class="button button-upload-file button-upload-artwork">upload</button>
 				</form>
 			</div>
-			<div id="form-message" class="message {{message-type}}">{{message}}</div>
+			<div id="message-wrapper"></div>
 			<figure id="figure" class="figure uploaded-image"></figure>
 			<div class="form-wrapper add-new-form-wrapper">
 				<form class="form add-new">
@@ -172,7 +173,6 @@
 		<!-- Edit artwork -->
 		<script id="editTemplate" type="x-handlebars-template">
 			<h2 class="heading heading_two add-new">Edit {{title}}</h2>
-			<div id="form-message" class="message {{message-type}}">{{message}}</div>
 			<figure id="figure" class="figure uploaded-image"></figure>
 			<div class="form-wrapper add-new-form-wrapper">
 				<form class="form add-new">
@@ -252,7 +252,8 @@
 
 		<!-- Edit List Template -->
 		<script id="editlistTemplate" type="text/x-handlebars-template">
-			<h1>Edit Artwork</h1>
+			<h2 class="heading heading_two edit-artwork">Edit Artwork</h2>
+			<div id="message-wrapper"></div>
 			<div class="artlist-wrapper">
 				<div class="art-list">
 					{{#each this}}
@@ -264,6 +265,28 @@
 					{{/each}}
 				</div>
 			</div>
+			<div id="edit-artwork-form-wrapper"></div>
+		</script>
+
+		<!-- Delete List Template -->
+		<script id="deleteArtworkTemplate" type="text/x-handlebars-template">
+			<h2 class="heading heading_two edit-artwork">Edit Artwork</h2>
+			<div id="message-wrapper"></div>
+			<div class="artlist-wrapper">
+				<div class="art-list">
+					{{#each this}}
+						<div class="art-list-item {{url}}">
+							<span class="artwork-title">{{title}} [{{id}}] : {{medium}}</span>
+							<span class="price">${{price}}</span>
+							<a class="button button-delete delete-art" data-id="{{id}}" data-title="{{title}}">delete</a>
+						</div>
+					{{/each}}
+				</div>
+			</div>
+		</script>
+
+		<script id="messageTemplate" type="x-handlebars-template">
+			<div id="form-message" class="message {{messageType}}">{{message}}</div>
 		</script>
 			
 

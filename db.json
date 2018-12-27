@@ -20,7 +20,7 @@
       "type": "Black and white portrait",
       "size": "24\" x 18\"",
       "orientation": "porttrait",
-      "price": "34005000",
+      "price": "3400500",
       "url": "charlize1_7.jpg",
       "id": 2
     },
@@ -32,7 +32,7 @@
       "type": "Black and white portrait",
       "size": "16\" x 20\"",
       "orientation": "porttrait",
-      "price": "5000",
+      "price": "2231500",
       "url": "halle1_9.jpg",
       "id": 3
     },
@@ -44,9 +44,33 @@
       "type": "black and white portrait",
       "size": "14\" X 28.5\"",
       "orientation": "porttrait",
-      "price": "3400000",
-      "id": 4,
-      "url": "ladyinred.jpg"
+      "price": "34000000",
+      "url": "ladyinred.jpg",
+      "id": 4
+    },
+    {
+      "title": "Flower Face",
+      "status": "completed",
+      "medium": "acrylic on canvas",
+      "subject": "Cara Delevingne",
+      "type": "black and white portrait",
+      "size": "18\" x 24\"",
+      "orientation": "lanscape",
+      "price": "12833984308",
+      "url": "cara1_11.jpg",
+      "id": 5
+    },
+    {
+      "title": "Bob",
+      "status": "completed",
+      "medium": "acrylic on canvas",
+      "subject": "Bob Marley",
+      "type": "black and white portrait",
+      "size": "11\" x 14\"",
+      "orientation": "porttrait",
+      "price": "2300000",
+      "url": "bob.jpg",
+      "id": 6
     }
   ],
   "users": [

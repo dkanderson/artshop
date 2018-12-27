@@ -13,6 +13,8 @@ window.addEventListener('load', () => {
 	const registerTemplate = Handlebars.compile($('#registerTemplate').html());
 	const editTemplate = Handlebars.compile($('#editTemplate').html());
 	const editlistTemplate = Handlebars.compile($('#editlistTemplate').html());
+	const messageTemplate = Handlebars.compile($('#messageTemplate').html());
+	const deleteTemplate = Handlebars.compile($('#deleteArtworkTemplate').html());
 
 
 	const imgUrl = "";
@@ -48,7 +50,7 @@ window.addEventListener('load', () => {
 	//	Home Page
 
 	//---------------------------------------------------------------------------------------
-	
+
 	/* jshint ignore:start */
 	router.add( '/', async() => {
 		
@@ -148,8 +150,13 @@ window.addEventListener('load', () => {
 			
 			const response = await api.post('/addnew', formData);
 			
-			if(response.statusText === 'OK'){
-				alert('Success!');
+			if (response.status === 200){
+				
+				$('.add-new-form-wrapper').hide();
+				$('#figure').hide();
+				updateMessage(formData, true);
+				$('#artworkFile').val('');
+
 			}
 
 		} catch (error) {
@@ -164,7 +171,18 @@ window.addEventListener('load', () => {
 		const imgWrapper = $('#figure');
 		const artworkFile = $('#artworkFile')[0].files[0];
 		const fileData = new FormData();
-		
+
+		if (!artworkFile) {
+
+			updateMessage(null, false, "No file selected");
+			$('#message-wrapper').show();
+			return false;
+
+		}
+
+
+		imgWrapper.show();
+		$('#message-wrapper').hide();
 		fileData.append("artwork", artworkFile);
 
 		try{
@@ -187,16 +205,6 @@ window.addEventListener('load', () => {
 	}
 	/* jshint ignore:end */
 
-	const submitHandler = () => {
-
-			addNewArtwork();
-			return false;
-					
-	};
-
-	const uploadHandler = () => {
-		uploadArtwork();
-	};
 
 	router.add('/add', () => {
 		
@@ -207,13 +215,13 @@ window.addEventListener('load', () => {
 
 			event.preventDefault();
 
-			uploadHandler();
+			uploadArtwork();
 
 		});
 		
 		$('.add-new-form-wrapper').hide();
 
-		$('.form-submit').click(submitHandler);
+		$('.form-submit').click(addNewArtwork);
 
 	});
 
@@ -252,9 +260,11 @@ window.addEventListener('load', () => {
 
 		try{
 			
+			const formWrapper = $('#edit-artwork-form-wrapper');
 			const response = await api.get(`/artwork/${id}`);
 			let html = editTemplate(response.data);
-			el.html(html);
+			formWrapper.html(html);
+			formWrapper.show();
 
 			$('#update-artwork-button').on('click', (ev) => {
 
@@ -270,7 +280,7 @@ window.addEventListener('load', () => {
 					url: $('#url').val()
 				};
 
-				updateSelected(ev.currentTarget.dataset.id, updateData);
+				updateSelected(ev.currentTarget.dataset.id, updateData, formWrapper);
 
 			});
 
@@ -283,7 +293,7 @@ window.addEventListener('load', () => {
 
 	};
 
-	const updateSelected = async(id, data) => {
+	const updateSelected = async(id, data, el) => {
 
 		try {
 
@@ -291,8 +301,12 @@ window.addEventListener('load', () => {
 			
 			if (response.status === 200) {
 				
-				console.log('sucess!');
+				el.hide();
+				updateMessage(data, true);
 
+			} else {
+
+				updateMessage(data, false, "fuck if i know what happened");
 			}
 
 		} catch ( error ) {
@@ -301,6 +315,33 @@ window.addEventListener('load', () => {
 		}
 
 	};
+
+
+	const updateMessage = (data, success, err) => {
+
+		const msg = $('#message-wrapper');
+
+		const message = {};
+
+		if ( success ) {
+
+			message.messageType = "success";
+			message.message = `Artwork ${data.title} updated successfully`;
+
+		
+
+		} else {
+
+			message.messageType = "error";
+			message.message = `Error encounterd: ${err}`;
+
+		}
+
+		msg.show();
+		let html = messageTemplate(message);
+		msg.html(html);
+
+	}
 /* jshint ignore:end */
 
 	
@@ -324,6 +365,54 @@ window.addEventListener('load', () => {
 
 	//---------------------------------------------------------------------------------------//
 
+
+	//---------------------------------------------------------------------------------------
+
+	//	Delete Artwork
+
+	//---------------------------------------------------------------------------------------
+
+
+	/* jshint ignore:start */
+	const loadArtwork = async () => {
+
+		const response = await api.get('/artwork');
+		let html = deleteTemplate(response.data);
+		el.html(html);
+
+	};
+
+	const handleDeleteRequest = () => {
+
+		$('.button-delete.delete-art').on('click', async (ev) => {
+
+			const deleteRequest = await api.delete(`/artwork/${ev.currentTarget.dataset.id}`);
+			
+			if ( deleteRequest.status === 200 ) { 
+				
+				loadArtwork()
+				.then(handleDeleteRequest)
+				.catch (error => {
+					showError(error);
+				});
+
+			}
+
+		});
+
+	};
+	
+
+	router.add('/delete', () => {
+
+		loadArtwork()
+		.then(handleDeleteRequest)
+		.catch (error => {
+			showError(error);
+		});
+
+	});
+	/* jshint ignore:end */
 		
 
 	// Navigate to current url

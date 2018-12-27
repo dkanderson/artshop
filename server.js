@@ -7,7 +7,7 @@ const fileUpload = require('express-fileupload');
 const server = jsonServer.create();
 const router = jsonServer.router(`${__dirname}/db.json`);
 const middleware = jsonServer.defaults();
-const { getArtwork, getUsers, addNewArtwork, updateArtwork } = require('./lib/service');
+const { getArtwork, getUsers, addNewArtwork, updateArtwork, deleteArtwork } = require('./lib/service');
 
 
 
@@ -112,8 +112,20 @@ app.put('/api/artwork/:id', async (req, res) => {
 		errorHandler(error, req, res);
 
 	}
+});
 
+app.delete('/api/artwork/:id', async (req, res) => {
 
+	try {
+
+		const response = await deleteArtwork(req.params.id);
+		res.send('delete completed successfully');
+
+	} catch ( error ) {
+
+		errorHandler(error, req, res);
+
+	}
 });
 
 
