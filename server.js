@@ -7,7 +7,7 @@ const fileUpload = require('express-fileupload');
 const server = jsonServer.create();
 const router = jsonServer.router(`${__dirname}/db.json`);
 const middleware = jsonServer.defaults();
-const { getArtwork, getUsers, addNewArtwork } = require('./lib/service');
+const { getArtwork, getUsers, addNewArtwork, updateArtwork } = require('./lib/service');
 
 
 
@@ -46,6 +46,17 @@ app.get('/api/artwork', async (req, res) => {
 	}
 });
 
+app.get('/api/artwork/:id', async (req, res) => {
+
+	try {
+		const data = await getArtwork(req.params.id);
+		res.setHeader('Content-Type', 'application/json');
+		res.send(data);
+	}catch (error) {
+		errorHandler(error, req, res);
+	}
+});
+
 app.post('/api/addnew', async (req, res) => {
 	
 	try{
@@ -62,8 +73,6 @@ app.post('/api/addnew', async (req, res) => {
 });
 
 app.post('/api/upload', (req, res) => {
-
-	console.log(req.files);
 
 	if (Object.keys(req.files).length === 0) {
 
@@ -89,6 +98,22 @@ app.post('/api/upload', (req, res) => {
 
 		errorHandler(error, req, res);
 	}
+});
+
+app.put('/api/artwork/:id', async (req, res) => {
+
+	try {
+
+		const response = await updateArtwork(req.body, req.params.id);
+		res.send('update completed successfully');
+
+	} catch ( error ) {
+
+		errorHandler(error, req, res);
+
+	}
+
+
 });
 
 

@@ -23,15 +23,15 @@
       "price": 5000
     },
     {
-      "id": 3,
-      "title": "Nicole",
-      "status": "work in progress",
+      "title": "Bad Berry",
+      "status": "completed",
       "medium": "Acrylic on canvas",
-      "subject": "Nicole Kidman",
+      "subject": "Halle Berry",
       "type": "Black and white portrait",
       "size": "24\" x 18\"",
-      "url": "halle1_9.jpg",
-      "price": 5000
+      "orientation": "porttrait",
+      "price": "5000",
+      "id": 3
     },
     {
       "title": "",

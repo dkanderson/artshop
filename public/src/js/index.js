@@ -9,6 +9,10 @@ window.addEventListener('load', () => {
 	const storeTemplate = Handlebars.compile($('#store').html());
 	const contactTemplate = Handlebars.compile($('#contact').html());
 	const addNewTemplate = Handlebars.compile($('#addNew').html());
+	const loginTemplate = Handlebars.compile($('#loginTemplate').html());
+	const registerTemplate = Handlebars.compile($('#registerTemplate').html());
+	const editTemplate = Handlebars.compile($('#editTemplate').html());
+	const editlistTemplate = Handlebars.compile($('#editlistTemplate').html());
 
 
 	const imgUrl = "";
@@ -63,22 +67,50 @@ window.addEventListener('load', () => {
 			
 		}
 	});
-	/* jshint ignore:end */
+	
 
 	router.add('/about', () => {
 		let html = aboutTemplate();
 		el.html(html);
 	});
 
-	router.add('/store', () => {
+	router.add('/store', async() => {
 		let html = storeTemplate();
 		el.html(html);
+
+		try{
+			const response = await api.get('/artwork');
+			const artwork = response.data;
+
+			html = storeTemplate(artwork);
+			el.html(html);
+
+		} catch (error) {
+			
+			showError(error);
+
+		} finally {
+
+			console.log('loaded');
+			
+		}
 	});
 
 	router.add('/contact', () => {
 		let html = contactTemplate();
 		el.html(html);
 	});
+
+	router.add('/login', () => {
+		let html = loginTemplate();
+		el.html(html);
+	});
+
+	router.add('/register', () => {
+		let html = registerTemplate();
+		el.html(html);
+	});
+	/* jshint ignore:end */
 
 	// Perform POST request and update page
 	/* jshint ignore:start */
@@ -167,7 +199,70 @@ window.addEventListener('load', () => {
 		$('.form-submit').click(submitHandler);
 
 	});
-	
+
+	/* jshint ignore:start */
+	router.add('/edit', async() =>{
+
+		try{
+			
+			const editResponse = await api.get('/artwork');
+
+			let html = editlistTemplate(editResponse.data);
+			el.html(html);
+		
+		} catch ( error ) {
+
+			showError(error);
+
+		}
+
+		$('.button-edit.edit-art').on('click', async(ev) => {
+
+			ev.preventDefault();
+
+			try {
+				
+				const response = await api.get(`/artwork/${ev.currentTarget.dataset.id}`);
+				let html = editTemplate(response.data);
+				el.html(html);
+				console.log(response.data);
+
+				$('#update-artwork-button').on('click', async (ev) => {
+
+					const updateData = {
+						title: $("#title").val(),
+						status: $('#status').val(),
+						medium: $('#medium').val(),
+						subject: $('#subject').val(),
+						type: $('#type').val(),
+						size: $('#size').val(),
+						orientation: $('#orientation').val(),
+						price: $('#price').val()
+					};
+
+					try {
+
+						const response = await api.put(`/artwork/${ev.currentTarget.dataset.id}`, updateData);
+						console.log(response);
+
+					} catch ( error ) {
+
+						showError( error );
+					}
+
+				});
+
+
+			} catch ( error ) {
+				
+				showError(error);
+
+			} 
+		});
+
+	});
+	/* jshint ignore:end */
+		
 
 	// Navigate to current url
 	router.navigateTo(window.location.pathname);

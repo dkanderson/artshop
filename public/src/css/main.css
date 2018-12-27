@@ -390,7 +390,7 @@ th {
   justify-content: space-between;
   align-items: center;
   margin-right: 15px;
-  width: 80px;
+  width: 150px;
 }
 .user-nav .cart-svg {
   width: 20px;
@@ -509,12 +509,32 @@ p {
 img {
   min-width: 100%;
 }
+.artlist-wrapper {
+  padding: 20px;
+}
 .art-list {
   display: flex;
   flex-wrap: wrap;
 }
 .art-list .art-list-item {
-  padding: 10px;
+  margin: 10px;
+  max-width: 300px;
+}
+.art-list .artwork-wrapper {
+  border: 1px solid #ccc;
+  padding: 5px;
+  margin-bottom: 10px;
+}
+.art-list .artwork-title {
+  font-weight: 400;
+  display: block;
+  margin-bottom: 5px;
+}
+.art-list .price {
+  display: block;
+  border-bottom: 5px;
+  font-weight: 7000;
+  font-size: 1.5em;
 }
 .heading.heading_one {
   font-size: 3em;
@@ -634,4 +654,19 @@ img {
   width: 100%;
   border: 1px solid rgba(0, 0, 0, 0.4);
   padding: 20px;
+}
+.position-form {
+  display: grid;
+  grid-template-rows: 80vh;
+  justify-content: center;
+  align-items: center;
+}
+.position-form .form-wrapper {
+  display: block;
+  background-color: #eee;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.position-form .form-wrapper .input {
+  margin-bottom: 10px;
 }
