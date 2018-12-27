@@ -1,26 +1,28 @@
 {
   "artwork": [
     {
-      "id": 1,
       "title": "Nicole",
       "status": "work in progress",
       "medium": "Acrylic on canvas",
       "subject": "Nicole Kidman",
       "type": "Black and white portrait",
       "size": "24\" x 18\"",
+      "orientation": "landscape",
+      "price": "532000",
       "url": "nicole1_6.jpg",
-      "price": 5000
+      "id": 1
     },
     {
-      "id": 2,
-      "title": "Nicole",
+      "title": "Charlize",
       "status": "work in progress",
       "medium": "Acrylic on canvas",
-      "subject": "Nicole Kidman",
+      "subject": "Charlize Theron",
       "type": "Black and white portrait",
       "size": "24\" x 18\"",
+      "orientation": "porttrait",
+      "price": "34005000",
       "url": "charlize1_7.jpg",
-      "price": 5000
+      "id": 2
     },
     {
       "title": "Bad Berry",
@@ -28,29 +30,31 @@
       "medium": "Acrylic on canvas",
       "subject": "Halle Berry",
       "type": "Black and white portrait",
-      "size": "24\" x 18\"",
+      "size": "16\" x 20\"",
       "orientation": "porttrait",
       "price": "5000",
+      "url": "halle1_9.jpg",
       "id": 3
     },
     {
-      "title": "",
-      "status": "",
-      "medium": "",
-      "subject": "",
-      "type": "",
-      "size": "",
-      "orientation": "",
-      "price": "",
-      "url": "",
-      "id": 4
+      "title": "Lady in red",
+      "status": "completed",
+      "medium": "acrylic on canvas",
+      "subject": "sugar",
+      "type": "black and white portrait",
+      "size": "14\" X 28.5\"",
+      "orientation": "porttrait",
+      "price": "3400000",
+      "id": 4,
+      "url": "ladyinred.jpg"
     }
   ],
   "users": [
     {
       "id": 1,
       "username": "dkanderson",
-      "passwrod": "password"
+      "passwrod": "password",
+      "email": "duane@dkanderson.net"
     }
   ]
 }

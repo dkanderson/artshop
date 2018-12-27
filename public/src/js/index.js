@@ -43,7 +43,12 @@ window.addEventListener('load', () => {
 		el.html(html);
 	};
 
-	//Display Artwork
+	//---------------------------------------------------------------------------------------
+
+	//	Home Page
+
+	//---------------------------------------------------------------------------------------
+	
 	/* jshint ignore:start */
 	router.add( '/', async() => {
 		
@@ -73,6 +78,12 @@ window.addEventListener('load', () => {
 		let html = aboutTemplate();
 		el.html(html);
 	});
+
+	//---------------------------------------------------------------------------------------
+
+	//	Store
+
+	//---------------------------------------------------------------------------------------
 
 	router.add('/store', async() => {
 		let html = storeTemplate();
@@ -112,7 +123,13 @@ window.addEventListener('load', () => {
 	});
 	/* jshint ignore:end */
 
-	// Perform POST request and update page
+	
+	//---------------------------------------------------------------------------------------
+
+	//	Upload Artwork
+
+	//---------------------------------------------------------------------------------------
+
 	/* jshint ignore:start */
 	const addNewArtwork = async() => {
 		const formData = {
@@ -200,8 +217,21 @@ window.addEventListener('load', () => {
 
 	});
 
+	//---------------------------------------------------------------------------------------
+
+	//	End Upload Artwork
+
+	//---------------------------------------------------------------------------------------
+
+
+	//---------------------------------------------------------------------------------------
+
+	//	Edit Artwork
+
+	//---------------------------------------------------------------------------------------
+
 	/* jshint ignore:start */
-	router.add('/edit', async() =>{
+	const getEditList = async() => {
 
 		try{
 			
@@ -216,52 +246,84 @@ window.addEventListener('load', () => {
 
 		}
 
-		$('.button-edit.edit-art').on('click', async(ev) => {
+	};
 
-			ev.preventDefault();
+	const getSelected = async(id) => {
 
-			try {
+		try{
+			
+			const response = await api.get(`/artwork/${id}`);
+			let html = editTemplate(response.data);
+			el.html(html);
+
+			$('#update-artwork-button').on('click', (ev) => {
+
+				const updateData = {
+					title: $("#title").val(),
+					status: $('#status').val(),
+					medium: $('#medium').val(),
+					subject: $('#subject').val(),
+					type: $('#type').val(),
+					size: $('#size').val(),
+					orientation: $('#orientation').val(),
+					price: $('#price').val(),
+					url: $('#url').val()
+				};
+
+				updateSelected(ev.currentTarget.dataset.id, updateData);
+
+			});
+
+		
+		} catch ( error ) {
+
+			showError(error);
+
+		}
+
+	};
+
+	const updateSelected = async(id, data) => {
+
+		try {
+
+			const response = await api.put(`/artwork/${id}`, data);
+			
+			if (response.status === 200) {
 				
-				const response = await api.get(`/artwork/${ev.currentTarget.dataset.id}`);
-				let html = editTemplate(response.data);
-				el.html(html);
-				console.log(response.data);
+				console.log('sucess!');
 
-				$('#update-artwork-button').on('click', async (ev) => {
+			}
 
-					const updateData = {
-						title: $("#title").val(),
-						status: $('#status').val(),
-						medium: $('#medium').val(),
-						subject: $('#subject').val(),
-						type: $('#type').val(),
-						size: $('#size').val(),
-						orientation: $('#orientation').val(),
-						price: $('#price').val()
-					};
+		} catch ( error ) {
 
-					try {
+			showError( error );
+		}
 
-						const response = await api.put(`/artwork/${ev.currentTarget.dataset.id}`, updateData);
-						console.log(response);
+	};
+/* jshint ignore:end */
 
-					} catch ( error ) {
+	
+	router.add('/edit', () =>{
 
-						showError( error );
-					}
+		getEditList()
+		 .then(() => {
 
-				});
+		 	$('.button-edit.edit-art').on('click', (ev) => {
+		 		getSelected(ev.currentTarget.dataset.id);
+		 	});
 
-
-			} catch ( error ) {
-				
-				showError(error);
-
-			} 
-		});
+		 });
 
 	});
-	/* jshint ignore:end */
+	
+
+	//---------------------------------------------------------------------------------------
+
+	//	End Edit Artwork
+
+	//---------------------------------------------------------------------------------------//
+
 		
 
 	// Navigate to current url
