@@ -21,13 +21,14 @@
             	<div class="user-nav">
 	            	<div class="cart">
 	            		<a href="" class="shopping-cart">
-	            			<i class="cart-icon">
+	            			<a href="cart" id="view-cart" class="cart-icon">
+	            				<span id="cart-count" class="cart-count"></span>
 	            				<svg class="cart-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" width="512px" height="512px" viewBox="0 0 497.023 497.022" style="enable-background:new 0 0 497.023 497.022;" xml:space="preserve">
 							<g>
 								<path d="M493.861,99.578c-2.716-3.389-6.833-5.362-11.173-5.362H135.03c-0.119,0-0.229,0.035-0.343,0.035   C107.159,43.323,50.15,23.15,15.735,19.778C7.836,18.999,0.837,24.767,0.07,32.647c-0.774,7.88,4.989,14.897,12.87,15.665   c4.445,0.446,108.925,11.843,108.925,112.386c0,13.28,0.138,26.43,0.556,39.351c0,0.1-0.031,0.191-0.031,0.292   c0,0.177,0.049,0.345,0.054,0.52c2.098,63.249,11.565,120.794,50.911,159.04c8.296,8.069,17.644,14.916,27.995,20.657   c-14.031,9.18-23.335,25.006-23.335,42.993c0,28.329,23.043,51.375,51.375,51.375c28.327,0,51.373-23.046,51.373-51.375   c0-8.037-1.899-15.616-5.199-22.393c7.962,0.667,16.223,1.035,24.856,1.035c3.352,0,6.759-0.056,10.212-0.148h30.448   c-3.771,7.145-5.937,15.266-5.937,23.895c0,28.33,23.046,51.376,51.375,51.376c28.334,0,51.375-23.046,51.375-51.376   c0-8.629-2.156-16.75-5.927-23.895h7.71c7.915,0,14.337-6.418,14.337-14.338s-6.422-14.337-14.337-14.337l-129.446,0.005   c-53.522,1.559-91.752-9.61-116.889-34.037c-9.596-9.325-17.023-20.424-22.815-32.875h271.54c6.721,0,12.545-4.677,13.996-11.243   l40.622-183.563C497.623,107.412,496.586,102.971,493.861,99.578z M229.394,446.251c-12.518,0-22.701-10.184-22.701-22.7   c0-12.518,10.183-22.701,22.701-22.701c12.517,0,22.7,10.184,22.7,22.701C252.094,436.067,241.911,446.251,229.394,446.251z    M386.528,448.641c-12.518,0-22.701-10.184-22.701-22.701c0-12.517,10.184-22.7,22.701-22.7c12.517,0,22.7,10.184,22.7,22.7   C409.228,438.457,399.044,448.641,386.528,448.641z M464.832,122.895l-13.964,63.108H150.74   c-0.143-8.354-0.201-16.792-0.201-25.305c0-13.817-1.697-26.357-4.665-37.804H464.832z M430.557,277.788H160.512   c-4.956-19.294-7.521-40.606-8.778-63.11H444.52L430.557,277.788z" fill="#FFFFFF"/>
 							</g>
 							</svg>
-	            			</i>
+	            			</a>
 	            		</a>
 	            	</div>
 	            	<div class="user-login">
@@ -61,7 +62,7 @@
 								<span class="artwork-title">{{title}}</span>
 								<div class="artwork-wrapper"><img class="image image-artwork" src="artwork/{{url}}" alt=""></div>
 								<span class="price">${{price}}</span>
-								<a class="button button-cart add-cart" href=""><i class="icon icon-cart"></i>Add to cart</a>
+								<a class="button button-cart add-cart" href="" data-title="{{title}}" data-id="{{id}}" data-price="{{price}}" data-url="{{url}}"><i class="icon icon-cart"></i>Add to cart</a>
 							</div>
 						{{/if}}
 					{{/each}}
@@ -278,10 +279,32 @@
 						<div class="art-list-item {{url}}">
 							<span class="artwork-title">{{title}} [{{id}}] : {{medium}}</span>
 							<span class="price">${{price}}</span>
-							<a class="button button-delete delete-art" data-id="{{id}}" data-title="{{title}}">delete</a>
+							<a class="button button-delete delete-art" data-id="{{id}}" data-title="{{title}}" data-url={{url}}>delete</a>
 						</div>
 					{{/each}}
 				</div>
+			</div>
+		</script>
+
+		<!-- Shopping Cart Template -->
+		<script id="cartTemplate" type="x-handlebars-template">
+			<div id="cart-wrapper" class="cart-wrapper">
+				<table id="cart-table" class="cart-table">
+					<thead>
+						<th>item</th>
+						<th col-span=2>description</th>
+						<th>price</th>
+					</thead>
+					<tbody>
+						{{#each this}}
+						<tr>
+							<td><img src="/uploads/{{url}}" alt="{{title}}"></td>
+							<td col-span=2>{{title}}</td>
+							<td>{{price}}</td>
+						</tr>
+						{{/each}}
+					</tbody>
+				</table>
 			</div>
 		</script>
 
@@ -300,6 +323,7 @@
 
 	
 	<script src="scripts/jquery/dist/jquery.min.js"></script>
+	<script src="scripts/jquery.cookie/jquery.cookie.js"></script>
 	<script src="scripts/axios/dist/axios.min.js"></script>
 	<script src="scripts/handlebars/dist/handlebars.min.js"></script>
 	<script src="scripts/vanilla-router/dist/vanilla-router.min.js"></script>

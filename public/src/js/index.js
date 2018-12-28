@@ -15,9 +15,11 @@ window.addEventListener('load', () => {
 	const editlistTemplate = Handlebars.compile($('#editlistTemplate').html());
 	const messageTemplate = Handlebars.compile($('#messageTemplate').html());
 	const deleteTemplate = Handlebars.compile($('#deleteArtworkTemplate').html());
+	const cartTemplate = Handlebars.compile($('#cartTemplate').html());
 
 
-	const imgUrl = "";
+	var cart = [];
+
 
 	const router = new Router({
 		mode: 'history',
@@ -73,6 +75,8 @@ window.addEventListener('load', () => {
 			console.log('loaded');
 			
 		}
+
+		handleAddToCart();
 	});
 	
 
@@ -109,15 +113,33 @@ window.addEventListener('load', () => {
 		}
 	});
 
+	//---------------------------------------------------------------------------------------
+
+	//	Contact
+
+	//---------------------------------------------------------------------------------------
+
 	router.add('/contact', () => {
 		let html = contactTemplate();
 		el.html(html);
 	});
 
+	//---------------------------------------------------------------------------------------
+
+	//	Login
+
+	//---------------------------------------------------------------------------------------
+
 	router.add('/login', () => {
 		let html = loginTemplate();
 		el.html(html);
 	});
+
+	//---------------------------------------------------------------------------------------
+
+	//	Register
+
+	//---------------------------------------------------------------------------------------
 
 	router.add('/register', () => {
 		let html = registerTemplate();
@@ -225,11 +247,6 @@ window.addEventListener('load', () => {
 
 	});
 
-	//---------------------------------------------------------------------------------------
-
-	//	End Upload Artwork
-
-	//---------------------------------------------------------------------------------------
 
 
 	//---------------------------------------------------------------------------------------
@@ -359,12 +376,6 @@ window.addEventListener('load', () => {
 	});
 	
 
-	//---------------------------------------------------------------------------------------
-
-	//	End Edit Artwork
-
-	//---------------------------------------------------------------------------------------//
-
 
 	//---------------------------------------------------------------------------------------
 
@@ -389,7 +400,7 @@ window.addEventListener('load', () => {
 			const deleteRequest = await api.delete(`/artwork/${ev.currentTarget.dataset.id}`);
 			
 			if ( deleteRequest.status === 200 ) { 
-				
+
 				loadArtwork()
 				.then(handleDeleteRequest)
 				.catch (error => {
@@ -413,10 +424,92 @@ window.addEventListener('load', () => {
 
 	});
 	/* jshint ignore:end */
+
+	//---------------------------------------------------------------------------------------
+
+	//	Shopping Cart
+
+	//---------------------------------------------------------------------------------------
+
+
+	router.add('/cart', () => {
+
+		cartData = JSON.parse($.cookie('cart'));
+
+		let html = cartTemplate(cartData);
+		el.html(html);
+
+		/* jshint ignore:start */
+		const cartTotal = cartData.reduce((accumulator, currentValue) => {
+			
+			let x = (+currentValue.price);
+			return accumulator + x;
+
+		}, 0);
+		/* jshint ignore:end */
+
+		$.cookie('cartTotal', cartTotal);
+	});
+
+	const addToCart = (item) => {
+
+		console.log('added to cart', item);
+
+	};
+
+	// const viewCart = () => {
+
+
+
+	// };
+
+	const handleAddToCart = () => {
+
+		$('.button-cart').on('click', (ev) => {
+
+			ev.preventDefault();
+			
+			const item = {
+				id: ev.currentTarget.dataset.id,
+				price: ev.currentTarget.dataset.price,
+				title: ev.currentTarget.dataset.title,
+				url: ev.currentTarget.dataset.url
+			};
+		
+
+			if($.cookie('cart')){
+
+				cart = $.cookie('cart');
+				cart.push(item);
+				$.cookie('cart', cart);
+				$('#cart-count').html($.cookie('cart').length).show();
+				
+			}
+			
+
+		});
+	};
+
+
+
 		
 
 	// Navigate to current url
 	router.navigateTo(window.location.pathname);
+	
+	$.cookie.json = true;
+	if ( $.cookie('cart')){
+
+		$('#cart-count').html($.cookie('cart').length).show();	
+	
+	} else {
+
+		$('#cart-count').hide();	
+
+	}
+	
+
+	
 
 	// Highlight Active Menu on Refresh/Page Reload
 	const link = $(`a[href$='${window.location.pathname}']`);

@@ -392,6 +392,24 @@ th {
   margin-right: 15px;
   width: 150px;
 }
+.user-nav .cart-icon {
+  position: relative;
+}
+.user-nav .cart-icon .cart-count {
+  position: absolute;
+  top: -10px;
+  left: 5px;
+  background-color: green;
+  color: white;
+  font-size: 0.5em;
+  font-weight: 300;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  line-height: 15px;
+  text-align: center;
+  font-family: arial;
+}
 .user-nav .cart-svg {
   width: 20px;
   height: 20px;
@@ -654,15 +672,16 @@ img {
   font-weight: 200;
 }
 .button {
-  padding: 10px;
+  padding: 5px 10px;
   background: green;
   color: #fff;
   border-radius: 5px;
   text-align: center;
-  font-size: 1em;
+  font-size: 0.75em;
   font-weight: 400;
   display: inline-block;
   cursor: pointer;
+  text-decoration: none;
 }
 .button.form-submit {
   margin: 20px 0;
