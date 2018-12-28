@@ -288,22 +288,30 @@
 
 		<!-- Shopping Cart Template -->
 		<script id="cartTemplate" type="x-handlebars-template">
+			<h2 class="heading heading_two shopping-cart-heading">Shopping Cart</h2>
 			<div id="cart-wrapper" class="cart-wrapper">
 				<table id="cart-table" class="cart-table">
-					<thead>
-						<th>item</th>
-						<th col-span=2>description</th>
-						<th>price</th>
+					<thead class="cart-table-heading">
+						<th class="cart-table-heading-col">item</th>
+						<th class="cart-table-heading-col">description</th>
+						<th></th>
+						<th class="cart-table-heading-col">price</th>
 					</thead>
 					<tbody>
 						{{#each this}}
 						<tr>
-							<td><img src="/uploads/{{url}}" alt="{{title}}"></td>
-							<td col-span=2>{{title}}</td>
-							<td>{{price}}</td>
+							<td class="td td-image"><div class="td-image-wrapper"><img src="/uploads/{{url}}" alt="{{title}}"></div></td>
+							<td class="td td-title">{{title}}</td>
+							<td class="td td-remove"><button class="remove" data-index="{{@index}}">remove</button></td>
+							<td class="td td-price">${{price}}</td>
 						</tr>
 						{{/each}}
+						<tr>
+							<td colspan="3"></td>
+							<td class="td td-cart-total"><span class="span-cart-total" id="cart-total"></span></td>
+						</tr>
 					</tbody>
+
 				</table>
 			</div>
 		</script>
@@ -327,6 +335,7 @@
 	<script src="scripts/axios/dist/axios.min.js"></script>
 	<script src="scripts/handlebars/dist/handlebars.min.js"></script>
 	<script src="scripts/vanilla-router/dist/vanilla-router.min.js"></script>
+	<script src="src/js/formatCurrency.js"></script>
 	<script src="src/js/index.js"></script>
 	
 </body>

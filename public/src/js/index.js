@@ -431,13 +431,38 @@ window.addEventListener('load', () => {
 
 	//---------------------------------------------------------------------------------------
 
+	/* jshint ignore:start */
+	const removeFromCart = (index) => {
 
-	router.add('/cart', () => {
+		let cartData = $.cookie('cart');
 
-		cartData = JSON.parse($.cookie('cart'));
+		cartData.splice(index, index+1);
+		$.cookie('cart', cartData);
+		$('#cart-count').html($.cookie('cart').length);
+		loadCart();
+
+		if($.cookie('cart').length === 0)
+			$('#cart-count').hide();
+
+	};
+	/* jshint ignore:end */
+
+	const loadCart = () => {
+
+		if (typeof $.cookie('cart') === 'object') {
+
+			cartData = $.cookie('cart');
+
+		} else {
+
+			cartData = JSON.parse($.cookie('cart'));
+
+		}
+		
 
 		let html = cartTemplate(cartData);
 		el.html(html);
+
 
 		/* jshint ignore:start */
 		const cartTotal = cartData.reduce((accumulator, currentValue) => {
@@ -449,19 +474,21 @@ window.addEventListener('load', () => {
 		/* jshint ignore:end */
 
 		$.cookie('cartTotal', cartTotal);
-	});
+		$('#cart-total').html(`$${cartTotal}`).simpleMoneyFormat();
+		$('.td-price').simpleMoneyFormat();
 
-	const addToCart = (item) => {
-
-		console.log('added to cart', item);
+		$('.remove').on('click', (ev) => removeFromCart(ev.currentTarget.dataset.index));
 
 	};
 
-	// const viewCart = () => {
 
+	router.add('/cart', () => {
 
+		loadCart();
+		
+	});
 
-	// };
+	
 
 	const handleAddToCart = () => {
 
