@@ -1,560 +1,553 @@
 window.addEventListener('load', () => {
 
-	const el = $('#app');
+    const el = $('#app');
 
-	const bannerTemplate = Handlebars.compile($('#banner').html());
-	const homeContentTemplate = Handlebars.compile($('#home-content').html());
-	const errorTemplate = Handlebars.compile($('#errorTemplate').html());
-	const aboutTemplate = Handlebars.compile($('#about').html());
-	const storeTemplate = Handlebars.compile($('#store').html());
-	const contactTemplate = Handlebars.compile($('#contact').html());
-	const addNewTemplate = Handlebars.compile($('#addNew').html());
-	const loginTemplate = Handlebars.compile($('#loginTemplate').html());
-	const registerTemplate = Handlebars.compile($('#registerTemplate').html());
-	const editTemplate = Handlebars.compile($('#editTemplate').html());
-	const editlistTemplate = Handlebars.compile($('#editlistTemplate').html());
-	const messageTemplate = Handlebars.compile($('#messageTemplate').html());
-	const deleteTemplate = Handlebars.compile($('#deleteArtworkTemplate').html());
-	const cartTemplate = Handlebars.compile($('#cartTemplate').html());
+    const bannerTemplate = Handlebars.compile($('#banner').html());
+    // const homeContentTemplate = Handlebars.compile($('#home-content').html());
+    const errorTemplate = Handlebars.compile($('#errorTemplate').html());
+    const aboutTemplate = Handlebars.compile($('#about').html());
+    const storeTemplate = Handlebars.compile($('#store').html());
+    const contactTemplate = Handlebars.compile($('#contact').html());
+    const addNewTemplate = Handlebars.compile($('#addNew').html());
+    const loginTemplate = Handlebars.compile($('#loginTemplate').html());
+    const registerTemplate = Handlebars.compile($('#registerTemplate').html());
+    const editTemplate = Handlebars.compile($('#editTemplate').html());
+    const editlistTemplate = Handlebars.compile($('#editlistTemplate').html());
+    const messageTemplate = Handlebars.compile($('#messageTemplate').html());
+    const deleteTemplate = Handlebars.compile($('#deleteArtworkTemplate').html());
+    const cartTemplate = Handlebars.compile($('#cartTemplate').html());
 
 
-	var cart = [];
+    var cart = [];
 
 
-	const router = new Router({
-		mode: 'history',
-		page404: (path) => {
-			const html = errorTemplate({
-				class: 'not-found',
-				title: 'Error 404 - Page Not Found',
-				message: `The path '/${path}' does not exist`,
-			});
+    const router = new Router({
+        mode: 'history',
+        page404: (path) => {
+            const html = errorTemplate({
+                class: 'not-found',
+                title: 'Error 404 - Page Not Found',
+                message: `The path '/${path}' does not exist`,
+            });
 
-			el.html(html);
-		},
-	});
+            el.html(html);
+        },
+    });
 
-	const api = axios.create({
-		baseURL: 'http://localhost:3000/api',
-		timeout: 5000,
-	});
+    const api = axios.create({
+        baseURL: 'http://localhost:3000/api',
+        timeout: 5000,
+    });
 
 
-	// Display error
-	const showError = (error) => {
-		const { title, message } = error.response.data;
-		const html = errorTemplate({class: "sdds", title, message});
-		el.html(html);
-	};
+    // Display error
+    const showError = (error) => {
+        const { title, message } = error.response.data;
+        const html = errorTemplate({ class: "sdds", title, message });
+        el.html(html);
+    };
 
-	//---------------------------------------------------------------------------------------
+    //---------------------------------------------------------------------------------------
 
-	//	Home Page
+    //	Home Page
 
-	//---------------------------------------------------------------------------------------
+    //---------------------------------------------------------------------------------------
 
-	/* jshint ignore:start */
-	router.add( '/', async() => {
-		
-		let html = bannerTemplate();
-		el.html(html);
+    /* jshint ignore:start */
+    router.add('/', async () => {
 
-		try{
-			const response = await api.get('/artwork');
-			const artwork = response.data;
+        let html = bannerTemplate();
+        el.html(html);
 
-			html = bannerTemplate(artwork);
-			el.html(html);
+        try {
+            const response = await api.get('/artwork');
+            const artwork = response.data;
 
-		} catch (error) {
-			
-			showError(error);
+            html = bannerTemplate(artwork);
+            el.html(html);
 
-		} finally {
+        } catch (error) {
 
-			console.log('loaded');
-			
-		}
+            showError(error);
 
-		handleAddToCart();
-	});
-	
+        }
 
-	router.add('/about', () => {
-		let html = aboutTemplate();
-		el.html(html);
-	});
+        handleAddToCart();
+    });
 
-	//---------------------------------------------------------------------------------------
 
-	//	Store
+    router.add('/about', () => {
+        let html = aboutTemplate();
+        el.html(html);
+    });
 
-	//---------------------------------------------------------------------------------------
+    //---------------------------------------------------------------------------------------
 
-	router.add('/store', async() => {
-		let html = storeTemplate();
-		el.html(html);
+    //	Store
 
-		try{
-			const response = await api.get('/artwork');
-			const artwork = response.data;
+    //---------------------------------------------------------------------------------------
 
-			html = storeTemplate(artwork);
-			el.html(html);
+    router.add('/store', async () => {
+        let html = storeTemplate();
+        el.html(html);
 
-		} catch (error) {
-			
-			showError(error);
+        try {
+            const response = await api.get('/artwork');
+            const artwork = response.data;
 
-		} finally {
+            html = storeTemplate(artwork);
+            el.html(html);
 
-			console.log('loaded');
-			
-		}
-	});
+        } catch (error) {
 
-	//---------------------------------------------------------------------------------------
+            showError(error);
 
-	//	Contact
+        }
+    });
 
-	//---------------------------------------------------------------------------------------
+    //---------------------------------------------------------------------------------------
 
-	router.add('/contact', () => {
-		let html = contactTemplate();
-		el.html(html);
-	});
+    //	Contact
 
-	//---------------------------------------------------------------------------------------
+    //---------------------------------------------------------------------------------------
 
-	//	Login
+    router.add('/contact', () => {
+        let html = contactTemplate();
+        el.html(html);
+    });
 
-	//---------------------------------------------------------------------------------------
+    //---------------------------------------------------------------------------------------
 
-	router.add('/login', () => {
-		let html = loginTemplate();
-		el.html(html);
-	});
+    //	Login
 
-	//---------------------------------------------------------------------------------------
+    //---------------------------------------------------------------------------------------
 
-	//	Register
+    router.add('/login', () => {
+        let html = loginTemplate();
+        el.html(html);
+    });
 
-	//---------------------------------------------------------------------------------------
+    //---------------------------------------------------------------------------------------
 
-	router.add('/register', () => {
-		let html = registerTemplate();
-		el.html(html);
-	});
-	/* jshint ignore:end */
+    //	Register
 
-	
-	//---------------------------------------------------------------------------------------
+    //---------------------------------------------------------------------------------------
 
-	//	Upload Artwork
+    router.add('/register', () => {
+        let html = registerTemplate();
+        el.html(html);
+    });
+    /* jshint ignore:end */
 
-	//---------------------------------------------------------------------------------------
 
-	/* jshint ignore:start */
-	const addNewArtwork = async() => {
-		const formData = {
-			title: $("#title").val(),
-			status: $('#status').val(),
-			medium: $('#medium').val(),
-			subject: $('#subject').val(),
-			type: $('#type').val(),
-			size: $('#size').val(),
-			orientation: $('#orientation').val(),
-			price: $('#price').val(),
-			url: $('#url').val()
-		};
+    //---------------------------------------------------------------------------------------
 
-		try {
-			
-			const response = await api.post('/addnew', formData);
-			
-			if (response.status === 200){
-				
-				$('.add-new-form-wrapper').hide();
-				$('#figure').hide();
-				updateMessage(formData, true);
-				$('#artworkFile').val('');
+    //	Upload Artwork
 
-			}
+    //---------------------------------------------------------------------------------------
 
-		} catch (error) {
-			
-			showError(error);
-		}
-	};
+    /* jshint ignore:start */
+    const addNewArtwork = async () => {
+        const formData = {
+            title: $("#title").val(),
+            status: $('#status').val(),
+            medium: $('#medium').val(),
+            subject: $('#subject').val(),
+            type: $('#type').val(),
+            size: $('#size').val(),
+            orientation: $('#orientation').val(),
+            price: $('#price').val(),
+            url: $('#url').val()
+        };
 
-	const uploadArtwork = async() => {
+        try {
 
-		const figureTemplate = Handlebars.compile($('#uploadedImage').html());
-		const imgWrapper = $('#figure');
-		const artworkFile = $('#artworkFile')[0].files[0];
-		const fileData = new FormData();
+            const response = await api.post('/addnew', formData);
 
-		if (!artworkFile) {
+            if (response.status === 200) {
 
-			updateMessage(null, false, "No file selected");
-			$('#message-wrapper').show();
-			return false;
+                $('.add-new-form-wrapper').hide();
+                $('#figure').hide();
+                updateMessage(formData, true);
+                $('#artworkFile').val('');
 
-		}
+            }
 
+        } catch (error) {
 
-		imgWrapper.show();
-		$('#message-wrapper').hide();
-		fileData.append("artwork", artworkFile);
+            showError(error);
+        }
+    };
 
-		try{
+    const uploadArtwork = async () => {
 
-			const uploadResponse = await api.post('/upload', fileData, {headers: {'Content-Type': 'multipart/form-data'}});
-			
-			if(uploadResponse.status === 200){
-				
-				$('.add-new-form-wrapper').show();
-				$('#url').val(artworkFile.name);
-				let html = figureTemplate({imgUrl: artworkFile.name});
-				imgWrapper.html(html);
+        const figureTemplate = Handlebars.compile($('#uploadedImage').html());
+        const imgWrapper = $('#figure');
+        const artworkFile = $('#artworkFile')[0].files[0];
+        const fileData = new FormData();
 
-			}
+        if (!artworkFile) {
 
-		} catch ( error ) {
+            updateMessage(null, false, "No file selected");
+            $('#message-wrapper').show();
+            return false;
 
-			showError ( error );
-		}
-	}
-	/* jshint ignore:end */
+        }
 
 
-	router.add('/add', () => {
-		
-		let html = addNewTemplate();
-		el.html(html);
+        imgWrapper.show();
+        $('#message-wrapper').hide();
+        fileData.append("artwork", artworkFile);
 
-		$('.button-upload-artwork').on('click', (event) => {
+        try {
 
-			event.preventDefault();
+            const uploadResponse = await api.post('/upload', fileData, { headers: { 'Content-Type': 'multipart/form-data' } });
 
-			uploadArtwork();
+            if (uploadResponse.status === 200) {
 
-		});
-		
-		$('.add-new-form-wrapper').hide();
+                $('.add-new-form-wrapper').show();
+                $('#url').val(artworkFile.name);
+                let html = figureTemplate({ imgUrl: artworkFile.name });
+                imgWrapper.html(html);
 
-		$('.form-submit').click(addNewArtwork);
+            }
 
-	});
+        } catch (error) {
 
+            showError(error);
+        }
+    }
+    /* jshint ignore:end */
 
 
-	//---------------------------------------------------------------------------------------
+    router.add('/add', () => {
 
-	//	Edit Artwork
+        let html = addNewTemplate();
+        el.html(html);
 
-	//---------------------------------------------------------------------------------------
+        $('.button-upload-artwork').on('click', (event) => {
 
-	/* jshint ignore:start */
-	const getEditList = async() => {
+            event.preventDefault();
 
-		try{
-			
-			const editResponse = await api.get('/artwork');
+            uploadArtwork();
 
-			let html = editlistTemplate(editResponse.data);
-			el.html(html);
-		
-		} catch ( error ) {
+        });
 
-			showError(error);
+        $('.add-new-form-wrapper').hide();
 
-		}
+        $('.form-submit').click(addNewArtwork);
 
-	};
+    });
 
-	const getSelected = async(id) => {
 
-		try{
-			
-			const formWrapper = $('#edit-artwork-form-wrapper');
-			const response = await api.get(`/artwork/${id}`);
-			let html = editTemplate(response.data);
-			formWrapper.html(html);
-			formWrapper.show();
 
-			$('#update-artwork-button').on('click', (ev) => {
+    //---------------------------------------------------------------------------------------
 
-				const updateData = {
-					title: $("#title").val(),
-					status: $('#status').val(),
-					medium: $('#medium').val(),
-					subject: $('#subject').val(),
-					type: $('#type').val(),
-					size: $('#size').val(),
-					orientation: $('#orientation').val(),
-					price: $('#price').val(),
-					url: $('#url').val()
-				};
+    //	Edit Artwork
 
-				updateSelected(ev.currentTarget.dataset.id, updateData, formWrapper);
+    //---------------------------------------------------------------------------------------
 
-			});
+    /* jshint ignore:start */
+    const getEditList = async () => {
 
-		
-		} catch ( error ) {
+        try {
 
-			showError(error);
+            const editResponse = await api.get('/artwork');
 
-		}
+            let html = editlistTemplate(editResponse.data);
+            el.html(html);
 
-	};
+        } catch (error) {
 
-	const updateSelected = async(id, data, el) => {
+            showError(error);
 
-		try {
+        }
 
-			const response = await api.put(`/artwork/${id}`, data);
-			
-			if (response.status === 200) {
-				
-				el.hide();
-				updateMessage(data, true);
+    };
 
-			} else {
+    const getSelected = async (id) => {
 
-				updateMessage(data, false, "fuck if i know what happened");
-			}
+        try {
 
-		} catch ( error ) {
+            const formWrapper = $('#edit-artwork-form-wrapper');
+            const response = await api.get(`/artwork/${id}`);
+            let html = editTemplate(response.data);
+            formWrapper.html(html);
+            formWrapper.show();
 
-			showError( error );
-		}
+            $('#update-artwork-button').on('click', (ev) => {
 
-	};
+                const updateData = {
+                    title: $("#title").val(),
+                    status: $('#status').val(),
+                    medium: $('#medium').val(),
+                    subject: $('#subject').val(),
+                    type: $('#type').val(),
+                    size: $('#size').val(),
+                    orientation: $('#orientation').val(),
+                    price: $('#price').val(),
+                    url: $('#url').val()
+                };
 
+                updateSelected(ev.currentTarget.dataset.id, updateData, formWrapper);
 
-	const updateMessage = (data, success, err) => {
+            });
 
-		const msg = $('#message-wrapper');
 
-		const message = {};
+        } catch (error) {
 
-		if ( success ) {
+            showError(error);
 
-			message.messageType = "success";
-			message.message = `Artwork ${data.title} updated successfully`;
+        }
 
-		
+    };
 
-		} else {
+    const updateSelected = async (id, data, el) => {
 
-			message.messageType = "error";
-			message.message = `Error encounterd: ${err}`;
+        try {
 
-		}
+            const response = await api.put(`/artwork/${id}`, data);
 
-		msg.show();
-		let html = messageTemplate(message);
-		msg.html(html);
+            if (response.status === 200) {
 
-	}
-/* jshint ignore:end */
+                el.hide();
+                updateMessage(data, true);
 
-	
-	router.add('/edit', () =>{
+            } else {
 
-		getEditList()
-		 .then(() => {
+                updateMessage(data, false, "fuck if i know what happened");
+            }
 
-		 	$('.button-edit.edit-art').on('click', (ev) => {
-		 		getSelected(ev.currentTarget.dataset.id);
-		 	});
+        } catch (error) {
 
-		 });
+            showError(error);
+        }
 
-	});
-	
+    };
 
 
-	//---------------------------------------------------------------------------------------
+    const updateMessage = (data, success, err) => {
 
-	//	Delete Artwork
+        const msg = $('#message-wrapper');
 
-	//---------------------------------------------------------------------------------------
+        const message = {};
 
+        if (success) {
 
-	/* jshint ignore:start */
-	const loadArtwork = async () => {
+            message.messageType = "success";
+            message.message = `Artwork ${data.title} updated successfully`;
 
-		const response = await api.get('/artwork');
-		let html = deleteTemplate(response.data);
-		el.html(html);
 
-	};
 
-	const handleDeleteRequest = () => {
+        } else {
 
-		$('.button-delete.delete-art').on('click', async (ev) => {
+            message.messageType = "error";
+            message.message = `Error encounterd: ${err}`;
 
-			const deleteRequest = await api.delete(`/artwork/${ev.currentTarget.dataset.id}`);
-			
-			if ( deleteRequest.status === 200 ) { 
+        }
 
-				loadArtwork()
-				.then(handleDeleteRequest)
-				.catch (error => {
-					showError(error);
-				});
+        msg.show();
+        let html = messageTemplate(message);
+        msg.html(html);
 
-			}
+    }
+    /* jshint ignore:end */
 
-		});
 
-	};
-	
+    router.add('/edit', () => {
 
-	router.add('/delete', () => {
+        getEditList()
+            .then(() => {
 
-		loadArtwork()
-		.then(handleDeleteRequest)
-		.catch (error => {
-			showError(error);
-		});
+                $('.button-edit.edit-art').on('click', (ev) => {
+                    getSelected(ev.currentTarget.dataset.id);
+                });
 
-	});
-	/* jshint ignore:end */
+            });
 
-	//---------------------------------------------------------------------------------------
+    });
 
-	//	Shopping Cart
 
-	//---------------------------------------------------------------------------------------
 
-	/* jshint ignore:start */
-	const removeFromCart = (index) => {
+    //---------------------------------------------------------------------------------------
 
-		let cartData = $.cookie('cart');
+    //	Delete Artwork
 
-		cartData.splice(index, index+1);
-		$.cookie('cart', cartData);
-		$('#cart-count').html($.cookie('cart').length);
-		loadCart();
+    //---------------------------------------------------------------------------------------
 
-		if($.cookie('cart').length === 0)
-			$('#cart-count').hide();
 
-	};
-	/* jshint ignore:end */
+    /* jshint ignore:start */
+    const loadArtwork = async () => {
 
-	const loadCart = () => {
+        const response = await api.get('/artwork');
+        let html = deleteTemplate(response.data);
+        el.html(html);
 
-		if (typeof $.cookie('cart') === 'object') {
+    };
 
-			cartData = $.cookie('cart');
+    const handleDeleteRequest = () => {
 
-		} else {
+        $('.button-delete.delete-art').on('click', async (ev) => {
 
-			cartData = JSON.parse($.cookie('cart'));
+            const deleteRequest = await api.delete(`/artwork/${ev.currentTarget.dataset.id}`);
 
-		}
-		
+            if (deleteRequest.status === 200) {
 
-		let html = cartTemplate(cartData);
-		el.html(html);
+                loadArtwork()
+                    .then(handleDeleteRequest)
+                    .catch(error => {
+                        showError(error);
+                    });
 
+            }
 
-		/* jshint ignore:start */
-		const cartTotal = cartData.reduce((accumulator, currentValue) => {
-			
-			let x = (+currentValue.price);
-			return accumulator + x;
+        });
 
-		}, 0);
-		/* jshint ignore:end */
+    };
 
-		$.cookie('cartTotal', cartTotal);
-		$('#cart-total').html(`$${cartTotal}`).simpleMoneyFormat();
-		$('.td-price').simpleMoneyFormat();
 
-		$('.remove').on('click', (ev) => removeFromCart(ev.currentTarget.dataset.index));
+    router.add('/delete', () => {
 
-	};
+        loadArtwork()
+            .then(handleDeleteRequest)
+            .catch(error => {
+                showError(error);
+            });
 
+    });
+    /* jshint ignore:end */
 
-	router.add('/cart', () => {
+    //---------------------------------------------------------------------------------------
 
-		loadCart();
-		
-	});
+    //	Shopping Cart
 
-	
+    //---------------------------------------------------------------------------------------
 
-	const handleAddToCart = () => {
+    /* jshint ignore:start */
+    const removeFromCart = (index) => {
 
-		$('.button-cart').on('click', (ev) => {
+        let cartData = $.cookie('cart');
 
-			ev.preventDefault();
-			
-			const item = {
-				id: ev.currentTarget.dataset.id,
-				price: ev.currentTarget.dataset.price,
-				title: ev.currentTarget.dataset.title,
-				url: ev.currentTarget.dataset.url
-			};
-		
+        cartData.splice(index, index + 1);
+        $.cookie('cart', cartData);
+        $('#cart-count').html($.cookie('cart').length);
+        loadCart();
 
-			if($.cookie('cart')){
+        if ($.cookie('cart').length === 0)
+            $('#cart-count').hide();
 
-				cart = $.cookie('cart');
-				cart.push(item);
-				$.cookie('cart', cart);
-				$('#cart-count').html($.cookie('cart').length).show();
-				
-			}
-			
+    };
+    /* jshint ignore:end */
 
-		});
-	};
+    const loadCart = () => {
 
+        let cartData = {};
 
+        if (typeof $.cookie('cart') === 'object') {
 
-		
+            cartData = $.cookie('cart');
 
-	// Navigate to current url
-	router.navigateTo(window.location.pathname);
-	
-	$.cookie.json = true;
-	if ( $.cookie('cart')){
+        } else {
 
-		$('#cart-count').html($.cookie('cart').length).show();	
-	
-	} else {
+            cartData = JSON.parse($.cookie('cart'));
 
-		$('#cart-count').hide();	
+        }
 
-	}
-	
 
-	
+        let html = cartTemplate(cartData);
+        el.html(html);
 
-	// Highlight Active Menu on Refresh/Page Reload
-	const link = $(`a[href$='${window.location.pathname}']`);
-	link.addClass('active');
 
-	$('.link').on('click', (event) => {
-	  // Block browser page load
-	  event.preventDefault();
+        /* jshint ignore:start */
+        const cartTotal = cartData.reduce((accumulator, currentValue) => {
 
-	  // Highlight Active Menu on Click
-	  const target = $(event.target);
-	  $('.link').removeClass('active');
-	  target.addClass('active');
+            let x = (+currentValue.price);
+            return accumulator + x;
 
-	  // Navigate to clicked url
-	  const href = target.attr('href');
-	  const path = href.substr(href.lastIndexOf('/'));
-	  router.navigateTo(path);
-	});
+        }, 0);
+        /* jshint ignore:end */
+
+        $.cookie('cartTotal', cartTotal);
+        $('#cart-total').html(`$${cartTotal}`).simpleMoneyFormat();
+        $('.td-price').simpleMoneyFormat();
+
+        $('.remove').on('click', (ev) => removeFromCart(ev.currentTarget.dataset.index));
+
+    };
+
+
+    router.add('/cart', () => {
+
+        loadCart();
+
+    });
+
+
+
+    const handleAddToCart = () => {
+
+        $('.button-cart').on('click', (ev) => {
+
+            ev.preventDefault();
+
+            const item = {
+                id: ev.currentTarget.dataset.id,
+                price: ev.currentTarget.dataset.price,
+                title: ev.currentTarget.dataset.title,
+                url: ev.currentTarget.dataset.url
+            };
+
+
+            if ($.cookie('cart')) {
+
+                cart = $.cookie('cart');
+                cart.push(item);
+                $.cookie('cart', cart);
+                $('#cart-count').html($.cookie('cart').length).show();
+
+            }
+
+
+        });
+    };
+
+
+
+
+
+    // Navigate to current url
+    router.navigateTo(window.location.pathname);
+
+    $.cookie.json = true;
+    if ($.cookie('cart')) {
+
+        $('#cart-count').html($.cookie('cart').length).show();
+
+    } else {
+
+        $('#cart-count').hide();
+
+    }
+
+
+
+
+    // Highlight Active Menu on Refresh/Page Reload
+    const link = $(`a[href$='${window.location.pathname}']`);
+    link.addClass('active');
+
+    $('.link').on('click', (event) => {
+        // Block browser page load
+        event.preventDefault();
+
+        // Highlight Active Menu on Click
+        const target = $(event.target);
+        $('.link').removeClass('active');
+        target.addClass('active');
+
+        // Navigate to clicked url
+        const href = target.attr('href');
+        const path = href.substr(href.lastIndexOf('/'));
+        router.navigateTo(path);
+    });
 });
-
