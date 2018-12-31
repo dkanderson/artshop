@@ -35,8 +35,9 @@ const errorHandler = (err, req, res) => {
     }
 };
 
-/* jshint ignore:start */
+
 app.get('/api/artwork', async (req, res) => {
+
     try {
         const data = await getArtwork();
         res.setHeader('Content-Type', 'application/json');
@@ -130,7 +131,7 @@ app.delete('/api/artwork/:id', async (req, res) => {
 
 
 
-/* jshint ignore:end */
+
 
 app.use((req, res) => res.sendFile(`${__dirname}/public/index.html`));
 

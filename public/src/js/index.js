@@ -3,7 +3,6 @@ window.addEventListener('load', () => {
     const el = $('#app');
 
     const bannerTemplate = Handlebars.compile($('#banner').html());
-    // const homeContentTemplate = Handlebars.compile($('#home-content').html());
     const errorTemplate = Handlebars.compile($('#errorTemplate').html());
     const aboutTemplate = Handlebars.compile($('#about').html());
     const storeTemplate = Handlebars.compile($('#store').html());
@@ -16,6 +15,7 @@ window.addEventListener('load', () => {
     const messageTemplate = Handlebars.compile($('#messageTemplate').html());
     const deleteTemplate = Handlebars.compile($('#deleteArtworkTemplate').html());
     const cartTemplate = Handlebars.compile($('#cartTemplate').html());
+    const cartTotalTemplate = Handlebars.compile($('#cartTotalTemplate').html());
 
 
     var cart = [];
@@ -367,8 +367,6 @@ window.addEventListener('load', () => {
 
     });
 
-
-
     //---------------------------------------------------------------------------------------
 
     //	Delete Artwork
@@ -468,8 +466,8 @@ window.addEventListener('load', () => {
         /* jshint ignore:end */
 
         $.cookie('cartTotal', cartTotal);
-        $('#cart-total').html(`$${cartTotal}`).simpleMoneyFormat();
-        $('.td-price').simpleMoneyFormat();
+        let total = cartTotalTemplate({ total: cartTotal });
+        $('#cart-total').html(total);
 
         $('.remove').on('click', (ev) => removeFromCart(ev.currentTarget.dataset.index));
 
@@ -501,24 +499,27 @@ window.addEventListener('load', () => {
             if ($.cookie('cart')) {
 
                 cart = $.cookie('cart');
-                cart.push(item);
-                $.cookie('cart', cart);
-                $('#cart-count').html($.cookie('cart').length).show();
+
+            } else {
+
+                $.cookie('cart', []);
+                cart = $.cookie('cart');
 
             }
 
+            cart.push(item);
+            $.cookie('cart', cart);
+            $('#cart-count').html($.cookie('cart').length).show();
 
         });
     };
-
-
-
 
 
     // Navigate to current url
     router.navigateTo(window.location.pathname);
 
     $.cookie.json = true;
+
     if ($.cookie('cart')) {
 
         $('#cart-count').html($.cookie('cart').length).show();
@@ -528,9 +529,6 @@ window.addEventListener('load', () => {
         $('#cart-count').hide();
 
     }
-
-
-
 
     // Highlight Active Menu on Refresh/Page Reload
     const link = $(`a[href$='${window.location.pathname}']`);
