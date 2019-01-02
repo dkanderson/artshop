@@ -49,7 +49,7 @@
         "no-unsafe-negation": 2,
         "no-unused-labels": 2,
         "no-unused-vars": 2,
-        "no-useless-escape": 2,
+        // "no-useless-escape": 2,
         "require-yield": 2,
         "use-isnan": 2,
         "valid-typeof": 2

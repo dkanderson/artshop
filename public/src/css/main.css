@@ -591,6 +591,9 @@ img {
   color: red;
   border-color: red;
 }
+.hidden {
+  display: none;
+}
 .main-nav {
   box-sizing: border-box;
   background-color: #ccc;
@@ -670,6 +673,21 @@ img {
   /* Firefox 18- */
   color: #666;
   font-weight: 200;
+}
+.input.input.err {
+  border-color: red;
+  outline-color: red;
+}
+.input.input.match {
+  border-color: green;
+  outline-color: green;
+}
+.error-msg {
+  color: red;
+  display: block;
+}
+.error-msg.hidden {
+  display: none;
 }
 .button {
   padding: 5px 10px;

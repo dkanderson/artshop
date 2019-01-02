@@ -134,8 +134,154 @@ window.addEventListener('load', () => {
     //---------------------------------------------------------------------------------------
 
     router.add('/register', () => {
+
         let html = registerTemplate();
         el.html(html);
+
+        let regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        let emw = $('#error-msg-wrapper');
+        let username = $('#username');
+        let email = $('#email');
+        let pwd = $('#password');
+        let pwdc = $('#password-confirm');
+        let exists = $('#exists');
+        let register = $('#register-form');
+        let userExistsFlag = false;
+        let error = {
+            username: {
+                hasError: true,
+                msg: 'unique username is required'
+            },
+            email: {
+                hasError: true,
+                msg: 'valid email address is required'
+            },
+            password: {
+                hasError: true,
+                msg: 'password must be 8 characters or more'
+            },
+            passwordconf: {
+                hasError: true,
+                msg: 'passwords do not match'
+            }
+        };
+
+        emw.addClass('hidden');
+
+        username.on('focusout', () => {
+
+            if (username.val().length <= 0 || userExistsFlag) {
+                displayError(username, 'username');
+            } else {
+                removeError(username, 'username');
+            }
+
+        });
+
+        username.on('keyup', async (ev) => {
+            const res = await getUserData(ev.currentTarget.value);
+
+            if (res) {
+                exists.html('username exists');
+                username.removeClass('match').addClass('err');
+                userExistsFlag = true;
+            } else {
+                username.removeClass('err').addClass('match');
+                userExistsFlag = false;
+                exists.html('');
+                emw.addClass('hidden');
+            }
+        });
+
+        email.on('focusout', () => {
+
+            if (!email.val().match(regex)) {
+                displayError(email, 'email');
+            } else {
+                removeError(email, 'email');
+            }
+        });
+
+        pwd.on('focusout', () => {
+
+            if (pwd.val().length <= 8) {
+                displayError(pwd, 'password');
+            } else {
+                removeError(pwd, 'password');
+            }
+        });
+
+        pwdc.on('keyup', () => {
+
+            if (pwd.val() !== pwdc.val()) {
+                displayError(pwdc, 'passwordconf');
+            } else {
+                removeError(pwdc, 'passwordconf');
+            }
+        });
+
+        register.on('click', (ev) => {
+            ev.preventDefault();
+
+            if (isValidForm()) {
+
+                let formData = {
+                    username: username.val(),
+                    email: email.val(),
+                    password: pwd.val()
+                };
+
+                getUserData(formData.username);
+
+            } else {
+                console.log('invalid', error);
+            }
+        });
+
+        function displayError(el, type) {
+
+            el.addClass('err');
+            let errMsg = $('#error-msg');
+            error[`${type}`].hasError = true;
+
+            errMsg.html(error[`${type}`].msg);
+            emw.removeClass('hidden');
+        }
+
+        function removeError(el, type) {
+            el.removeClass('err').addClass('match');
+            emw.addClass('hidden');
+            error[`${type}`].hasError = false;
+        }
+
+        function isValidForm() {
+            if (error.username.hasError || userExistsFlag) {
+                displayError(username, 'username');
+                return false;
+            } else if (error.email.hasError) {
+                displayError(email, 'email');
+                return false;
+            } else if (error.password.hasError) {
+                displayError(pwd, 'password');
+                return false;
+            } else if (error.passwordconf.hasError) {
+                displayError(pwdc, 'passwordconf');
+                return false;
+            } else {
+                return true;
+            }
+        }
+
+        async function getUserData(username) {
+            try {
+                const response = await api.get(`/users/${username}`);
+                return response.data;
+            } catch (error) {
+                showError(error);
+            }
+        }
+
+
     });
     /* jshint ignore:end */
 

@@ -225,16 +225,17 @@
         <script id="registerTemplate" type="x-handlebars-template">
             <div class="position-form">
 				<div class="form-wrapper form-wrapper-register-form">
+					<div id="error-msg-wrapper" class="error-msg"><strong>Error: </strong><span id="error-msg"></span></div>
 					<form class="form form-register" id="login-form" action="">
-						<label for="username">Username: </label>
-						<input class="input input-username" id="username" name="username" type="text">
-						<label for="email">Email: </label>
-						<input class="input input-email" id="email" name="email" type="email">
-						<label for="password">Password: </label>
-						<input class="input input-password" id="password" type="password" name="password">
-						<label for="password-confirm">Confirm password: </label>
-						<input class="input input-password" id="password-confirm" type="password" name="password-confirm">
-						<button class="button button-register">register</button>
+						<label for="username">Username: </label><span class="required">*</span><span id="exists" class="exists"></span>
+						<input class="input input-username" id="username" name="username" type="text" autocomplete="username">
+						<label for="email">Email: </label><span class="required">*</span>
+						<input class="input input-email" id="email" name="email" type="email" autocomplete="email email-address">
+						<label for="password">Password: </label><span class="required">*</span>
+						<input class="input input-password" id="password" type="password" name="password" autocomplete="new-password">
+						<label for="password-confirm">Confirm password: </label><span class="required">*</span>
+						<input class="input input-password" id="password-confirm" type="password" name="password-confirm" autocomplete="new-password">
+						<button id="register-form" class="button button-register">register</button>
 					</form>
 				</div>
 			</div>
