@@ -17,10 +17,12 @@ window.addEventListener('load', () => {
     const cartTemplate = Handlebars.compile($('#cartTemplate').html());
     const cartTotalTemplate = Handlebars.compile($('#cartTotalTemplate').html());
     const userNavTemplate = Handlebars.compile($('#userNavTemplate').html());
+    const mainNavTemplate = Handlebars.compile($('#mainNavTemplate').html());
 
 
     var cart = [];
     loadUserNav({username: $.cookie('user')});
+    loadMainNav({username: $.cookie('user')});
 
 
     const router = new Router({
@@ -728,6 +730,12 @@ window.addEventListener('load', () => {
     function loadUserNav(data) {
         let html = userNavTemplate(data);
         $('#user-login').html(html);
+    }
+
+    // Load main nav
+    function loadMainNav(data) {
+    	let html = mainNavTemplate(data);
+    	$('#main-nav').html(html);
     }
 
 

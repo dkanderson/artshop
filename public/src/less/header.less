@@ -1,38 +1,43 @@
-.ring, .dee{ fill: #fff; }
+.ring,
+.dee {
+    fill: #fff;
+}
 
-.blob{
+.blob {
     fill: none;
 }
 
-.header{
-	background: #000;
-    .branding{
+.header {
+    background: #000;
+
+    .branding {
         display: flex;
         justify-content: space-between;
-    }   
+    }
 }
 
-.branding .logo-svg{
-    margin-top:15px;
+.branding .logo-svg {
+    margin-top: 15px;
     margin-left: 15px;
-    width:60px;
-    height:60px;
+    width: 60px;
+    height: 60px;
     margin-bottom: 15px;
     -webkit-transition: all 5 ease;
     -o-transition: all 5 ease;
     transition: all 5 ease;
 }
 
-.user-nav{
+.user-nav {
     display: flex;
-    justify-content: space-between;
+    justify-content: right;
     align-items: center;
-    margin-right: 15px;
-    width: 150px;
+    margin-right: 0px;
+    width: 240px;
 
-    .cart-icon{
+    .cart-icon {
         position: relative;
-        .cart-count{
+
+        .cart-count {
             position: absolute;
             top: -10px;
             left: 5px;
@@ -49,20 +54,24 @@
         }
     }
 
-    .cart-svg{
+    .cart-svg {
         width: 20px;
         height: 20px;
+        margin-left: 10px;
         order: 1;
     }
 
-    
+
 
     .user-login {
         order: -1;
-        .link{
+
+        .link {
             color: #fff;
             text-decoration: none;
-            &:hover{
+            margin-right:10px;
+
+            &:hover {
                 text-decoration: underline;
             }
         }

@@ -387,10 +387,10 @@ th {
 }
 .user-nav {
   display: flex;
-  justify-content: space-between;
+  justify-content: right;
   align-items: center;
-  margin-right: 15px;
-  width: 150px;
+  margin-right: 0px;
+  width: 240px;
 }
 .user-nav .cart-icon {
   position: relative;
@@ -413,6 +413,7 @@ th {
 .user-nav .cart-svg {
   width: 20px;
   height: 20px;
+  margin-left: 10px;
   order: 1;
 }
 .user-nav .user-login {
@@ -421,6 +422,7 @@ th {
 .user-nav .user-login .link {
   color: #fff;
   text-decoration: none;
+  margin-right: 10px;
 }
 .user-nav .user-login .link:hover {
   text-decoration: underline;

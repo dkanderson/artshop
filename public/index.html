@@ -37,16 +37,10 @@
                 </div>
             </div>
         </header>
-        <nav class="main-nav">
-            <a class="link nav-link home" href="/">home</a>
-            <a class="link nav-linkabout" href="/about">about</a>
-            <a class="link nav-link store" href="/store">store</a>
-            <a class="link nav-link contact" href="/contact">contact</a>
-            <a href="/add" class="link">add new</a>
-            <a href="/edit" class="link">edit</a>
-            <a href="/delete" class="link">delete</a>
+        <nav id="main-nav" class="main-nav">
         </nav>
-        <!-- Template for site banner -->
+
+        <!-- ::Home - Template for site banner -->
         <script id="banner" type="text/x-handlebars-template">
             <div class="banner">
 				<h1 class="heading heading_one art-shop">Art Shop</h1>
@@ -66,21 +60,13 @@
 				</div>
 			</div>
 		</script>
-        <!-- Template: home page content list -->
-        <script id="home-content" type="text/x-handlebars-template">
-            <div class="content">
-				<ul class="art-list">
-					<li class=""><img src="src/img/bedroom.jpg" alt=""></li>
-					<li><img src="src/img/bedroom.jpg" alt=""></li>
-					<li><img src="src/img/bedroom.jpg" alt=""></li>
-				</ul>
-			</div>
-		</script>
-        <!-- About Template -->
+
+        <!-- ::About - Template -->
         <script id="about" type="text/x-handlebars-template">
             <h1>About</h1>
 		</script>
-        <!-- Store Template -->
+
+        <!-- ::Store Template -->
         <script id="store" type="text/x-handlebars-template">
             <div class="banner">
 				<h1 class="heading heading_one art-shop">Art Store</h1>
@@ -100,18 +86,21 @@
 				</div>
 			</div>
 		</script>
-        <!-- contact Template -->
+
+        <!-- ::Contact - Template -->
         <script id="contact" type="text/x-handlebars-template">
             <h1>Contactt</h1>
 		</script>
-        <!-- Error Template -->
+
+        <!-- ::Error - Template -->
         <script id="errorTemplate" type="text/x-handlebars-template">
             <div class="{{class}}">
 				<h1>{{title}}</h1>
 				<p>{{message}}</p>
 			</div>
 		</script>
-        <!-- Add new artwork -->
+
+        <!-- ::Add new artwork -->
         <script id="addNew" type="x-handlebars-template">
             <h2 class="heading heading_two add-new">Add a new piece of art work</h2>
 			<div class="form-wrapper">
@@ -161,7 +150,8 @@
 				</form>
 			</div>
 		</script>
-        <!-- Edit artwork -->
+
+        <!-- ::Edit artwork -->
         <script id="editTemplate" type="x-handlebars-template">
             <h2 class="heading heading_two add-new">Edit {{title}}</h2>
 			<figure id="figure" class="figure uploaded-image"></figure>
@@ -204,9 +194,13 @@
 				</form>
 			</div>
 		</script>
+
+        <!-- ::Upload - Template -->
         <script id="uploadedImage" type="x-handlebars-template">
             <img src="/uploads/{{imgUrl}}" alt="">
 		</script>
+
+        <!-- ::Login Template -->
         <script id="loginTemplate" type="x-handlebars-template">
             <div class="position-form">
 				<div class="form-wrapper form-wrapper-login-form">
@@ -221,6 +215,8 @@
 				</div>
 			</div>
 		</script>
+
+        <!-- ::Register Template -->
         <script id="registerTemplate" type="x-handlebars-template">
             <div class="position-form">
 				<div class="form-wrapper form-wrapper-register-form">
@@ -239,7 +235,8 @@
 				</div>
 			</div>
 		</script>
-        <!-- Edit List Template -->
+
+        <!-- ::Edit List Template -->
         <script id="editlistTemplate" type="text/x-handlebars-template">
             <h2 class="heading heading_two edit-artwork">Edit Artwork</h2>
 			<div id="message-wrapper"></div>
@@ -256,7 +253,8 @@
 			</div>
 			<div id="edit-artwork-form-wrapper"></div>
 		</script>
-        <!-- Delete List Template -->
+
+        <!-- ::Delete List Template -->
         <script id="deleteArtworkTemplate" type="text/x-handlebars-template">
             <h2 class="heading heading_two edit-artwork">Edit Artwork</h2>
 			<div id="message-wrapper"></div>
@@ -272,7 +270,8 @@
 				</div>
 			</div>
 		</script>
-        <!-- Shopping Cart Template -->
+
+        <!-- ::Shopping Cart Template -->
         <script id="cartTemplate" type="x-handlebars-template">
             <h2 class="heading heading_two shopping-cart-heading">Shopping Cart</h2>
 			<div id="cart-wrapper" class="cart-wrapper">
@@ -301,14 +300,20 @@
 				</table>
 			</div>
 		</script>
+
+        <!-- ::Form Message -->
         <script id="messageTemplate" type="x-handlebars-template">
             <div id="form-message" class="message {{messageType}}">{{message}}</div>
 		</script>
+
+        <!-- ::Total -->
         <script id="cartTotalTemplate" type="x-handlebars-template">
             <span class="span-cart-total">{{formatCurrency total}}</span>
 		</script>
-		<script id="userNavTemplate" type="x-handlebars-template">
-				{{#if username}}
+
+        <!-- ::User Nav -->
+        <script id="userNavTemplate" type="x-handlebars-template">
+            {{#if username}}
 	                <span class="link nav-link sign-in">logged in: {{username}}</span>
 	                <a class="link nav-link register" href="/logout" data-user="username">logout</a>
                 {{else}}
@@ -316,7 +321,25 @@
                 	<a class="link nav-link register" href="/register">register</a>
                 {{/if}}
 		</script>
+
+		<!-- ::Main nav -->
+		<script id="mainNavTemplate" type="x-handlebars-template">
+			<a class="link nav-link home" href="/">home</a>
+            <a class="link nav-linkabout" href="/about">about</a>
+            <a class="link nav-link store" href="/store">store</a>
+            <a class="link nav-link contact" href="/contact">contact</a>
+            {{#if username}}
+	            <a href="/add" class="link">add new</a>
+	            <a href="/edit" class="link">edit</a>
+	            <a href="/delete" class="link">delete</a>
+            {{/if}}
+		</script>
+
+
+        <!-- App container -->
         <div id="app" class="app-container"></div>
+
+
         <footer class="footer">
             <span class="span copy">&copy; All rights reserved 2018.</span>
         </footer>

@@ -183,8 +183,8 @@ server.listen(serverPort, () => {
     console.log('json server running on %d', serverPort);
 });
 
-const test = async () => {
-	const response = await getUsers('dka');
-	console.log(response);
-}
-test();
+// const test = async () => {
+// 	const response = await getUsers('dka');
+// 	console.log(response);
+// }
+// test();
