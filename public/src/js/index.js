@@ -20,7 +20,7 @@ window.addEventListener('load', () => {
 
 
     var cart = [];
-    loadUserNav($.cookie('user'));
+    loadUserNav({username: $.cookie('user')});
 
 
     const router = new Router({
@@ -55,7 +55,6 @@ window.addEventListener('load', () => {
 
     //---------------------------------------------------------------------------------------
 
-    /* jshint ignore:start */
     router.add('/', async () => {
 
         let html = bannerTemplate();
@@ -125,13 +124,54 @@ window.addEventListener('load', () => {
     //---------------------------------------------------------------------------------------
 
     router.add('/login', () => {
+
         let html = loginTemplate();
         el.html(html);
+        let login = $('#login');
+        let emw = $('#error-msg-wrapper');
+        let username = $('#username');
+        let pwd = $('#password');
+        let errMsg = $('#error-msg');
+
+        emw.addClass('hidden');
+
+        login.on('click', async (ev) => {
+
+            ev.preventDefault();
+
+            let formData = {
+                username: username.val(),
+                password: pwd.val()
+            };
+
+            const response = await getUserData(formData.username);
+
+            if (formData.password === response.password) {
+                $.cookie('user', response.username);
+                window.location.href = '/';
+            } else {
+
+                pwd.addClass('err');
+                errMsg.html('Invalid password');
+                emw.removeClass('hidden');
+            }
+        });
+    });
+
+     //---------------------------------------------------------------------------------------
+
+    //	Logout
+
+    //---------------------------------------------------------------------------------------
+
+    router.add('/logout', () => {
+    	$.removeCookie('user');
+    	window.location.href = '/';
     });
 
     //---------------------------------------------------------------------------------------
 
-    //	Register
+    //	Register User
 
     //---------------------------------------------------------------------------------------
 
@@ -265,6 +305,8 @@ window.addEventListener('load', () => {
             error[`${type}`].hasError = false;
         }
 
+
+
         function isValidForm() {
             if (error.username.hasError || userExistsFlag) {
                 displayError(username, 'username');
@@ -283,17 +325,6 @@ window.addEventListener('load', () => {
             }
         }
 
-        async function getUserData(username) {
-            try {
-                if(username){
-                	const response = await api.get(`/users/${username}`);
-                	return response.data;
-                }
-            } catch (error) {
-                showError(error);
-            }
-        }
-
         async function addNewUser(data) {
             try {
                 const response = await api.post('/users', data);
@@ -305,7 +336,18 @@ window.addEventListener('load', () => {
 
 
     });
-    /* jshint ignore:end */
+
+    // make it global
+    async function getUserData(username) {
+        try {
+            if (username) {
+                const response = await api.get(`/users/${username}`);
+                return response.data;
+            }
+        } catch (error) {
+            showError(error);
+        }
+    }
 
 
     //---------------------------------------------------------------------------------------
@@ -682,9 +724,10 @@ window.addEventListener('load', () => {
         });
     };
 
-    function loadUserNav(data){
-    	let html = userNavTemplate(data);
-    	$('#user-login').html(html);
+    // Load user navigation
+    function loadUserNav(data) {
+        let html = userNavTemplate(data);
+        $('#user-login').html(html);
     }
 
 
