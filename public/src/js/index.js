@@ -16,9 +16,11 @@ window.addEventListener('load', () => {
     const deleteTemplate = Handlebars.compile($('#deleteArtworkTemplate').html());
     const cartTemplate = Handlebars.compile($('#cartTemplate').html());
     const cartTotalTemplate = Handlebars.compile($('#cartTotalTemplate').html());
+    const userNavTemplate = Handlebars.compile($('#userNavTemplate').html());
 
 
     var cart = [];
+    loadUserNav($.cookie('user'));
 
 
     const router = new Router({
@@ -179,9 +181,10 @@ window.addEventListener('load', () => {
         });
 
         username.on('keyup', async (ev) => {
+
             const res = await getUserData(ev.currentTarget.value);
 
-            if (res) {
+            if (res && ev.currentTarget.value.length) {
                 exists.html('username exists');
                 username.removeClass('match').addClass('err');
                 userExistsFlag = true;
@@ -202,7 +205,7 @@ window.addEventListener('load', () => {
             }
         });
 
-        pwd.on('focusout', () => {
+        pwd.on('focusout keyup', () => {
 
             if (pwd.val().length <= 8) {
                 displayError(pwd, 'password');
@@ -221,26 +224,34 @@ window.addEventListener('load', () => {
         });
 
         register.on('click', (ev) => {
+
             ev.preventDefault();
 
             if (isValidForm()) {
 
+                let postCount = 0;
                 let formData = {
                     username: username.val(),
                     email: email.val(),
                     password: pwd.val()
                 };
 
-                getUserData(formData.username);
+                const response = addNewUser(formData);
 
-            } else {
-                console.log('invalid', error);
+                if (response.status === 200 || postCount < 1) {
+                    postCount += 1;
+                    $('#registration-form')[0].reset();
+                    window.location.href = '/login';
+                }
+
             }
+
+            return true;
         });
 
         function displayError(el, type) {
 
-            el.addClass('err');
+            el.removeClass('match').addClass('err');
             let errMsg = $('#error-msg');
             error[`${type}`].hasError = true;
 
@@ -274,8 +285,19 @@ window.addEventListener('load', () => {
 
         async function getUserData(username) {
             try {
-                const response = await api.get(`/users/${username}`);
-                return response.data;
+                if(username){
+                	const response = await api.get(`/users/${username}`);
+                	return response.data;
+                }
+            } catch (error) {
+                showError(error);
+            }
+        }
+
+        async function addNewUser(data) {
+            try {
+                const response = await api.post('/users', data);
+                return response;
             } catch (error) {
                 showError(error);
             }
@@ -659,6 +681,11 @@ window.addEventListener('load', () => {
 
         });
     };
+
+    function loadUserNav(data){
+    	let html = userNavTemplate(data);
+    	$('#user-login').html(html);
+    }
 
 
     // Navigate to current url

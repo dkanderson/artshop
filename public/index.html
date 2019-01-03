@@ -32,9 +32,7 @@
 	            			</a>
                         </a>
                     </div>
-                    <div class="user-login">
-                        <a class="link nav-link sign-in" href="/login">sign in | </a>
-                        <a class="link nav-link register" href="/register">register</a>
+                    <div id="user-login" class="user-login">
                     </div>
                 </div>
             </div>
@@ -226,7 +224,7 @@
             <div class="position-form">
 				<div class="form-wrapper form-wrapper-register-form">
 					<div id="error-msg-wrapper" class="error-msg"><strong>Error: </strong><span id="error-msg"></span></div>
-					<form class="form form-register" id="login-form" action="">
+					<form class="form form-register" id="registration-form" action="">
 						<label for="username">Username: </label><span class="required">*</span><span id="exists" class="exists"></span>
 						<input class="input input-username" id="username" name="username" type="text" autocomplete="username">
 						<label for="email">Email: </label><span class="required">*</span>
@@ -307,6 +305,15 @@
 		</script>
         <script id="cartTotalTemplate" type="x-handlebars-template">
             <span class="span-cart-total">{{formatCurrency total}}</span>
+		</script>
+		<script id="userNavTemplate" type="x-handlebars-template">
+				{{#if username}}
+	                <span class="link nav-link sign-in">logged in: {{username}}</span>
+	                <a class="link nav-link register" href="/logout" data-user="username">logout</a>
+                {{else}}
+                	<a class="link nav-link sign-in" href="/login">sign in</a>
+                	<a class="link nav-link register" href="/register">register</a>
+                {{/if}}
 		</script>
         <div id="app" class="app-container"></div>
         <footer class="footer">
