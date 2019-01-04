@@ -129,7 +129,7 @@ module.exports = function(grunt) {
         'dev'
     ]);
     grunt.registerTask('dev', [
-        'jshint',
+        'eslint',
         'less:development',
         'autoprefixer:dev'
     ]);

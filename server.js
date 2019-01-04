@@ -1,19 +1,18 @@
 require('dotenv').config(); //read env files
 
 const express = require('express');
-const jsonServer = require('json-server');
+const mongoose = require('mongoose');
 const fileUpload = require('express-fileupload');
 
-const server = jsonServer.create();
-const router = jsonServer.router(`${__dirname}/db.json`);
-const middleware = jsonServer.defaults();
 const { getArtwork, addNewArtwork, updateArtwork, deleteArtwork, getUsers, addNewUser } = require('./lib/service');
 
 
+const dbUrl = `mongodb://${process.env.DB_USER}:${process.env.DB_PASSWORD}@ds251598.mlab.com:51598/artshop`;
+
+mongoose.Promise = Promise;
 
 const app = express();
 const port = process.env.PORT || 3000;
-const serverPort = process.env.SERVER_PORT || 3001;
 
 app.use(express.json());
 app.use(fileUpload());
@@ -49,8 +48,10 @@ app.get('/api/artwork', async (req, res) => {
 
 app.get('/api/artwork/:id', async (req, res) => {
 
+    let id = parseInt(req.params.id, 10);
+
     try {
-        const data = await getArtwork(req.params.id);
+        const data = await getArtwork(id);
         res.setHeader('Content-Type', 'application/json');
         res.send(data);
     } catch (error) {
@@ -103,9 +104,11 @@ app.post('/api/upload', (req, res) => {
 
 app.put('/api/artwork/:id', async (req, res) => {
 
+    let id = parseInt(req.params.id, 10);
+
     try {
 
-        await updateArtwork(req.body, req.params.id);
+        await updateArtwork(req.body, id);
         res.send('update completed successfully');
 
     } catch (error) {
@@ -117,9 +120,11 @@ app.put('/api/artwork/:id', async (req, res) => {
 
 app.delete('/api/artwork/:id', async (req, res) => {
 
+    let id = parseInt(req.params.id, 10);
+
     try {
 
-        await deleteArtwork(req.params.id);
+        await deleteArtwork(id);
         res.send('delete completed successfully');
 
     } catch (error) {
@@ -172,19 +177,26 @@ app.post('/api/users', async (req, res) => {
 
 app.use((req, res) => res.sendFile(`${__dirname}/public/index.html`));
 
+mongoose.connect(dbUrl, { useNewUrlParser: true }, (err) => {
+    console.log('mongo db connection', err)
+})
+
 app.listen(port, () => {
     console.log('listening on %d', port);
 });
 
-server.use(router);
-server.use(middleware);
-
-server.listen(serverPort, () => {
-    console.log('json server running on %d', serverPort);
-});
-
-// const test = async () => {
-// 	const response = await getUsers('dka');
-// 	console.log(response);
-// }
-// test();
+const test = async () => {
+	const response = await addNewArtwork({
+        medium: "acrylic on canvas",
+        orientation: "porttrait",
+        price: "50000000",
+        size: "14\" X 28.5\"",
+        status: "completed",
+        subject: "sugar",
+        title: "Pinks",
+        type: "black and white portrait",
+        url: "pinks.jpg"
+    });
+	console.log(response);
+}
+test();

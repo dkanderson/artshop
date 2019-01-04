@@ -275,7 +275,8 @@ window.addEventListener('load', () => {
                 let formData = {
                     username: username.val(),
                     email: email.val(),
-                    password: pwd.val()
+                    password: pwd.val(),
+                    passwordConf: pwdc.val()
                 };
 
                 const response = addNewUser(formData);
