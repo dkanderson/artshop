@@ -21,8 +21,8 @@ window.addEventListener('load', () => {
 
 
     var cart = [];
-    loadUserNav({username: $.cookie('user')});
-    loadMainNav({username: $.cookie('user')});
+    loadUserNav({ username: $.cookie('user') });
+    loadMainNav({ username: $.cookie('user') });
 
 
     const router = new Router({
@@ -53,7 +53,7 @@ window.addEventListener('load', () => {
 
     //---------------------------------------------------------------------------------------
 
-    //	Home Page
+    //  Home Page
 
     //---------------------------------------------------------------------------------------
 
@@ -86,7 +86,7 @@ window.addEventListener('load', () => {
 
     //---------------------------------------------------------------------------------------
 
-    //	Store
+    //  Store
 
     //---------------------------------------------------------------------------------------
 
@@ -110,7 +110,7 @@ window.addEventListener('load', () => {
 
     //---------------------------------------------------------------------------------------
 
-    //	Contact
+    //  Contact
 
     //---------------------------------------------------------------------------------------
 
@@ -121,7 +121,7 @@ window.addEventListener('load', () => {
 
     //---------------------------------------------------------------------------------------
 
-    //	Login
+    //  Login
 
     //---------------------------------------------------------------------------------------
 
@@ -160,20 +160,20 @@ window.addEventListener('load', () => {
         });
     });
 
-     //---------------------------------------------------------------------------------------
+    //---------------------------------------------------------------------------------------
 
-    //	Logout
+    //  Logout
 
     //---------------------------------------------------------------------------------------
 
     router.add('/logout', () => {
-    	$.removeCookie('user');
-    	window.location.href = '/';
+        $.removeCookie('user');
+        window.location.href = '/';
     });
 
     //---------------------------------------------------------------------------------------
 
-    //	Register User
+    //  Register User
 
     //---------------------------------------------------------------------------------------
 
@@ -355,7 +355,7 @@ window.addEventListener('load', () => {
 
     //---------------------------------------------------------------------------------------
 
-    //	Upload Artwork
+    //  Upload Artwork
 
     //---------------------------------------------------------------------------------------
 
@@ -456,7 +456,7 @@ window.addEventListener('load', () => {
 
     //---------------------------------------------------------------------------------------
 
-    //	Edit Artwork
+    //  Edit Artwork
 
     //---------------------------------------------------------------------------------------
 
@@ -478,12 +478,12 @@ window.addEventListener('load', () => {
 
     };
 
-    const getSelected = async (id) => {
+    const getSelected = async (title) => {
 
         try {
 
             const formWrapper = $('#edit-artwork-form-wrapper');
-            const response = await api.get(`/artwork/${id}`);
+            const response = await api.get(`/artwork/${title}`);
             let html = editTemplate(response.data);
             formWrapper.html(html);
             formWrapper.show();
@@ -502,7 +502,16 @@ window.addEventListener('load', () => {
                     url: $('#url').val()
                 };
 
-                updateSelected(ev.currentTarget.dataset.id, updateData, formWrapper);
+                updateSelected(ev.currentTarget.dataset.title, updateData, formWrapper);
+
+                getEditList()
+                .then(() => {
+
+                    $('.button-edit.edit-art').on('click', (ev) => {
+                        getSelected(ev.currentTarget.dataset.title);
+                    });
+
+                });
 
             });
 
@@ -515,11 +524,11 @@ window.addEventListener('load', () => {
 
     };
 
-    const updateSelected = async (id, data, el) => {
+    const updateSelected = async (title, data, el) => {
 
         try {
 
-            const response = await api.put(`/artwork/${id}`, data);
+            const response = await api.put(`/artwork/${title}`, data);
 
             if (response.status === 200) {
 
@@ -573,7 +582,7 @@ window.addEventListener('load', () => {
             .then(() => {
 
                 $('.button-edit.edit-art').on('click', (ev) => {
-                    getSelected(ev.currentTarget.dataset.id);
+                    getSelected(ev.currentTarget.dataset.title);
                 });
 
             });
@@ -582,7 +591,7 @@ window.addEventListener('load', () => {
 
     //---------------------------------------------------------------------------------------
 
-    //	Delete Artwork
+    //  Delete Artwork
 
     //---------------------------------------------------------------------------------------
 
@@ -600,7 +609,7 @@ window.addEventListener('load', () => {
 
         $('.button-delete.delete-art').on('click', async (ev) => {
 
-            const deleteRequest = await api.delete(`/artwork/${ev.currentTarget.dataset.id}`);
+            const deleteRequest = await api.delete(`/artwork/${ev.currentTarget.dataset.title}`);
 
             if (deleteRequest.status === 200) {
 
@@ -630,7 +639,7 @@ window.addEventListener('load', () => {
 
     //---------------------------------------------------------------------------------------
 
-    //	Shopping Cart
+    //  Shopping Cart
 
     //---------------------------------------------------------------------------------------
 
@@ -702,7 +711,6 @@ window.addEventListener('load', () => {
             ev.preventDefault();
 
             const item = {
-                id: ev.currentTarget.dataset.id,
                 price: ev.currentTarget.dataset.price,
                 title: ev.currentTarget.dataset.title,
                 url: ev.currentTarget.dataset.url
@@ -735,8 +743,8 @@ window.addEventListener('load', () => {
 
     // Load main nav
     function loadMainNav(data) {
-    	let html = mainNavTemplate(data);
-    	$('#main-nav').html(html);
+        let html = mainNavTemplate(data);
+        $('#main-nav').html(html);
     }
 
 

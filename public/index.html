@@ -53,7 +53,7 @@
 								<span class="artwork-title">{{title}}</span>
 								<div class="artwork-wrapper"><img class="image image-artwork" src="artwork/{{url}}" alt=""></div>
 								<span class="price">{{formatCurrency price}}</span>
-								<a class="button button-cart add-cart" href="" data-title="{{title}}" data-id="{{id}}" data-price="{{price}}" data-url="{{url}}"><i class="icon icon-cart"></i>Add to cart</a>
+								<a class="button button-cart add-cart" href="" data-title="{{title}}" data-price="{{price}}" data-url="{{url}}"><i class="icon icon-cart"></i>Add to cart</a>
 							</div>
 						{{/if}}
 					{{/each}}
@@ -190,7 +190,7 @@
 						<input class="input input_text add-new" id="price" type="number" name="price" value="{{price}}">
 					</fieldset>
 					<input class="input input_hidden add-new" id="url" type="hidden" name="url" value="{{url}}">
-					<div class="button form-submit update-artwork" id="update-artwork-button" data-id="{{id}}">Update Artwork</div>
+					<div class="button form-submit update-artwork" id="update-artwork-button" data-title="{{title}}">Update Artwork</div>
 				</form>
 			</div>
 		</script>
@@ -264,7 +264,7 @@
 						<div class="art-list-item {{url}}">
 							<span class="artwork-title">{{title}} [{{id}}] : {{medium}}</span>
 							<span class="price">{{formatCurrency price}}</span>
-							<a class="button button-delete delete-art" data-id="{{id}}" data-title="{{title}}" data-url={{url}}>delete</a>
+							<a class="button button-delete delete-art" data-title="{{title}}" data-url={{url}}>delete</a>
 						</div>
 					{{/each}}
 				</div>

@@ -3,6 +3,7 @@ require('dotenv').config(); //read env files
 const express = require('express');
 const mongoose = require('mongoose');
 const fileUpload = require('express-fileupload');
+const fs = require('fs');
 
 const { getArtwork, addNewArtwork, updateArtwork, deleteArtwork, getUsers, addNewUser } = require('./lib/service');
 
@@ -19,11 +20,12 @@ app.use(fileUpload());
 
 //Set public folder as root
 app.use(express.static('public'));
-app.use('/uploads', express.static(`${__dirname}/public/artwork/`));
 
+// Set static routes
+app.use('/uploads', express.static(`${__dirname}/public/artwork/`));
 app.use('/scripts', express.static(`${__dirname}/node_modules/`)); //combine js files later
 
-
+// Handle errors
 const errorHandler = (err, req, res) => {
     if (err.response) {
         res.status(403).send({ title: 'Server responded with an error', message: err.message });
@@ -35,37 +37,68 @@ const errorHandler = (err, req, res) => {
 };
 
 
+//---------------------------------------------------------------------------------------
+
+//  Routes
+
+//---------------------------------------------------------------------------------------
+
+
+// Get Artwork
 app.get('/api/artwork', async (req, res) => {
 
     try {
         const data = await getArtwork();
-        res.setHeader('Content-Type', 'application/json');
-        res.send(data);
+
+        if (data) {
+            res.setHeader('Content-Type', 'application/json');
+            res.send(data);
+        } else if (data.hasOwnProperty('type')) {
+            throw data;
+        } else {
+            res.status(500).send({ title: 'An unexpected error occured', message: "No records found" });
+        }
+
     } catch (error) {
         errorHandler(error, req, res);
     }
 });
 
-app.get('/api/artwork/:id', async (req, res) => {
-
-    let id = parseInt(req.params.id, 10);
+// Get Artwork by Title
+app.get('/api/artwork/:title', async (req, res) => {
 
     try {
-        const data = await getArtwork(id);
-        res.setHeader('Content-Type', 'application/json');
-        res.send(data);
+
+        const data = await getArtwork(req.params.title);
+
+        if (response.hasOwnProperty("type")) {
+
+            throw data;
+
+        } else {
+
+            res.setHeader('Content-Type', 'application/json');
+            res.send(data);
+        }
+
     } catch (error) {
         errorHandler(error, req, res);
     }
 });
 
+// Add new artwork
 app.post('/api/addnew', async (req, res) => {
 
     try {
 
-        await addNewArtwork(req.body);
-        res.setHeader('Content-Type', 'application/json');
-        res.send('Added successfully');
+        const response = await addNewArtwork(req.body);
+
+        if (response.hasOwnProperty("type")) {
+            throw response;
+        } else {
+            res.setHeader('Content-Type', 'application/json');
+            res.send('Added successfully');
+        }
 
     } catch (error) {
 
@@ -74,6 +107,7 @@ app.post('/api/addnew', async (req, res) => {
     }
 });
 
+// Upload artwork image
 app.post('/api/upload', (req, res) => {
 
     if (Object.keys(req.files).length === 0) {
@@ -102,14 +136,18 @@ app.post('/api/upload', (req, res) => {
     }
 });
 
-app.put('/api/artwork/:id', async (req, res) => {
-
-    let id = parseInt(req.params.id, 10);
+// Update Artwork
+app.put('/api/artwork/:title', async (req, res) => {
 
     try {
 
-        await updateArtwork(req.body, id);
-        res.send('update completed successfully');
+        const response = await updateArtwork(req.body, req.params.title);
+
+        if (response.hasOwnProperty("type")) {
+            throw response;
+        } else {
+            res.send('update completed successfully');
+        }
 
     } catch (error) {
 
@@ -118,14 +156,29 @@ app.put('/api/artwork/:id', async (req, res) => {
     }
 });
 
-app.delete('/api/artwork/:id', async (req, res) => {
-
-    let id = parseInt(req.params.id, 10);
+// Delete artwork
+app.delete('/api/artwork/:title', async (req, res) => {
 
     try {
 
-        await deleteArtwork(id);
-        res.send('delete completed successfully');
+        const artwork = await getArtwork(req.params.title);
+
+        if ( artwork.url ) {
+            fs.unlink(`${__dirname}/public/artwork/${artwork.url}`, (err) => {
+                if (err) {
+                    throw err;
+                }
+            });
+        }
+
+        const response = await deleteArtwork(req.params.title);
+
+        if (response.hasOwnProperty("type")) {
+            throw response;
+        } else {
+
+            res.send('delete completed successfully');
+        }
 
     } catch (error) {
 
@@ -134,35 +187,58 @@ app.delete('/api/artwork/:id', async (req, res) => {
     }
 });
 
+// Get Users
 app.get('/api/users', async (req, res) => {
 
     try {
         const data = await getUsers();
-        res.setHeader('Content-Type', 'application/json');
-        res.send(data);
+        if (data) {
+            res.setHeader('Content-Type', 'application/json');
+            res.send(data);
+        } else if (data.hasOwnProperty("type")) {
+            throw data;
+        } else {
+            res.status(500).send({ title: 'An unexpected error occured', message: `No Records Found` });
+        }
+
     } catch (error) {
         errorHandler(error, req, res);
     }
 });
 
+// Get user by username
 app.get('/api/users/:username', async (req, res) => {
 
     try {
         const data = await getUsers(req.params.username);
-        res.setHeader('Content-Type', 'application/json');
-        res.send(data);
+        if (data) {
+            res.setHeader('Content-Type', 'application/json');
+            res.send(data);
+        } else if (data.hasOwnProperty("type")) {
+            throw data;
+        } else {
+            res.status(500).send({ title: 'An unexpected error occured', message: `No Records Found for ${req.params.username}` });
+        }
+
     } catch (error) {
         errorHandler(error, req, res);
     }
 });
 
+// Add new user
 app.post('/api/users', async (req, res) => {
 
     try {
 
-        await addNewUser(req.body);
-        res.setHeader('Content-Type', 'application/json');
-        res.send('Added successfully');
+        const response = await addNewUser(req.body);
+
+        if (response.hasOwnProperty("type")) {
+            throw response;
+        } else {
+            res.setHeader('Content-Type', 'application/json');
+            res.send('Added successfully');
+        }
+
 
     } catch (error) {
 
@@ -174,29 +250,15 @@ app.post('/api/users', async (req, res) => {
 
 
 
-
+// Set main html file
 app.use((req, res) => res.sendFile(`${__dirname}/public/index.html`));
 
+// Connect to mongoDB
 mongoose.connect(dbUrl, { useNewUrlParser: true }, (err) => {
     console.log('mongo db connection', err)
 })
 
+// Start server
 app.listen(port, () => {
     console.log('listening on %d', port);
 });
-
-const test = async () => {
-	const response = await addNewArtwork({
-        medium: "acrylic on canvas",
-        orientation: "porttrait",
-        price: "50000000",
-        size: "14\" X 28.5\"",
-        status: "completed",
-        subject: "sugar",
-        title: "Pinks",
-        type: "black and white portrait",
-        url: "pinks.jpg"
-    });
-	console.log(response);
-}
-test();
