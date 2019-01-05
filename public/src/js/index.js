@@ -141,23 +141,26 @@ window.addEventListener('load', () => {
 
             ev.preventDefault();
 
-            let formData = {
-                username: username.val(),
-                password: pwd.val()
-            };
+            if (username.val() && pwd.val()) {
 
-            const response = await getUserData(formData.username);
+                let formData = {
+                    username: username.val(),
+                    password: pwd.val()
+                };
 
-            if (formData.password === response.password) {
-                $.cookie('user', response.username);
+                const response = await api.post('/login', formData);
+
+                $.cookie('user', response.data);
                 window.location.href = '/';
+
             } else {
 
                 pwd.addClass('err');
-                errMsg.html('Invalid password');
+                errMsg.html('Both fields required');
                 emw.removeClass('hidden');
             }
         });
+
     });
 
     //---------------------------------------------------------------------------------------
@@ -166,8 +169,11 @@ window.addEventListener('load', () => {
 
     //---------------------------------------------------------------------------------------
 
-    router.add('/logout', () => {
-        $.removeCookie('user');
+    router.add('/logout', async () => {
+
+        const response = await api.post('/logout');
+
+        $.removeCookie('user', response);
         window.location.href = '/';
     });
 
@@ -505,13 +511,13 @@ window.addEventListener('load', () => {
                 updateSelected(ev.currentTarget.dataset.title, updateData, formWrapper);
 
                 getEditList()
-                .then(() => {
+                    .then(() => {
 
-                    $('.button-edit.edit-art').on('click', (ev) => {
-                        getSelected(ev.currentTarget.dataset.title);
+                        $('.button-edit.edit-art').on('click', (ev) => {
+                            getSelected(ev.currentTarget.dataset.title);
+                        });
+
                     });
-
-                });
 
             });
 
@@ -537,7 +543,7 @@ window.addEventListener('load', () => {
 
             } else {
 
-                updateMessage(data, false, "fuck if i know what happened");
+                updateMessage(data, false, "Error updating record");
             }
 
         } catch (error) {
@@ -753,7 +759,7 @@ window.addEventListener('load', () => {
 
     $.cookie.json = true;
 
-    if ($.cookie('cart')) {
+    if ($.cookie('cart') && $.cookie('cart').length > 0) {
 
         $('#cart-count').html($.cookie('cart').length).show();
 

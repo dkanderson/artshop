@@ -3,10 +3,13 @@ require('dotenv').config(); //read env files
 const express = require('express');
 const mongoose = require('mongoose');
 const fileUpload = require('express-fileupload');
+const session = require('express-session');
 const fs = require('fs');
+// const MongoStore = require('connect-mongo')(session);
+
+var User = require('./lib/user');
 
 const { getArtwork, addNewArtwork, updateArtwork, deleteArtwork, getUsers, addNewUser } = require('./lib/service');
-
 
 const dbUrl = `mongodb://${process.env.DB_USER}:${process.env.DB_PASSWORD}@ds251598.mlab.com:51598/artshop`;
 
@@ -17,6 +20,7 @@ const port = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(fileUpload());
+
 
 //Set public folder as root
 app.use(express.static('public'));
@@ -37,6 +41,17 @@ const errorHandler = (err, req, res) => {
 };
 
 
+// Use sessions
+app.use(session({
+    secret: 'davinci',
+    resave: true,
+    saveUninitialized: false
+    // store: new MongoStore({
+    //     mongooseConnection: mongoose.connection
+    // })
+}));
+
+
 //---------------------------------------------------------------------------------------
 
 //  Routes
@@ -47,14 +62,14 @@ const errorHandler = (err, req, res) => {
 // Get Artwork
 app.get('/api/artwork', async (req, res) => {
 
+    console.log(req.session);
+
     try {
         const data = await getArtwork();
 
         if (data) {
             res.setHeader('Content-Type', 'application/json');
             res.send(data);
-        } else if (data.hasOwnProperty('type')) {
-            throw data;
         } else {
             res.status(500).send({ title: 'An unexpected error occured', message: "No records found" });
         }
@@ -71,7 +86,7 @@ app.get('/api/artwork/:title', async (req, res) => {
 
         const data = await getArtwork(req.params.title);
 
-        if (response.hasOwnProperty("type")) {
+        if (data.hasOwnProperty("type")) {
 
             throw data;
 
@@ -163,7 +178,7 @@ app.delete('/api/artwork/:title', async (req, res) => {
 
         const artwork = await getArtwork(req.params.title);
 
-        if ( artwork.url ) {
+        if (artwork.url) {
             fs.unlink(`${__dirname}/public/artwork/${artwork.url}`, (err) => {
                 if (err) {
                     throw err;
@@ -211,14 +226,9 @@ app.get('/api/users/:username', async (req, res) => {
 
     try {
         const data = await getUsers(req.params.username);
-        if (data) {
-            res.setHeader('Content-Type', 'application/json');
-            res.send(data);
-        } else if (data.hasOwnProperty("type")) {
-            throw data;
-        } else {
-            res.status(500).send({ title: 'An unexpected error occured', message: `No Records Found for ${req.params.username}` });
-        }
+
+        res.setHeader('Content-Type', 'application/json');
+        res.send(data);
 
     } catch (error) {
         errorHandler(error, req, res);
@@ -247,7 +257,45 @@ app.post('/api/users', async (req, res) => {
     }
 });
 
+// Handle login
+app.post('/api/login', async (req, res, next) => {
 
+    User.authenticate(req.body.username, req.body.password, (error, user) => {
+        if ( error || !user ) {
+            let err = new Error('User login failed');
+            err.status = 401;
+            return next(err);
+        } else {
+            req.session.userId = user._id;
+            res.send(user.username);
+        }
+    })
+});
+
+app.post('/api/logout', (req, res, next) => {
+    if ( req.session ) {
+
+        req.session.destroy((err) => {
+            if( err ) {
+                console.log(err);
+                return next(err);
+            } else {
+                res.send('logged out successfully');
+            }
+        });
+    }
+});
+
+//Custom middleware
+function requiresLogin(req, res, next){
+    if ( req.session && req.session.userId ) {
+        return next();
+    } else {
+        let err = new Error("You must be logged in to view this page");
+        err.staus = 401;
+        return next(err);
+    }
+}
 
 
 // Set main html file
@@ -256,7 +304,8 @@ app.use((req, res) => res.sendFile(`${__dirname}/public/index.html`));
 // Connect to mongoDB
 mongoose.connect(dbUrl, { useNewUrlParser: true }, (err) => {
     console.log('mongo db connection', err)
-})
+});
+
 
 // Start server
 app.listen(port, () => {
