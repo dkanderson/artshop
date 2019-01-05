@@ -4,7 +4,11 @@ const express = require('express');
 const mongoose = require('mongoose');
 const fileUpload = require('express-fileupload');
 const session = require('express-session');
-const fs = require('fs');
+const { unlink, createWriteStream } = require('fs');
+const { promisify } = require('util');
+
+promisify(unlink);
+
 // const MongoStore = require('connect-mongo')(session);
 
 var User = require('./lib/user');
@@ -108,10 +112,21 @@ app.post('/api/addnew', async (req, res) => {
 
         const response = await addNewArtwork(req.body);
 
-        if (response.hasOwnProperty("type")) {
-            throw response;
+        if (response) {
+
+            if (response.hasOwnProperty('type')) {
+
+                throw response;
+
+            } else {
+
+                res.setHeader('Content-Type', 'application/json');
+                res.send(response);
+            }
+
+
         } else {
-            res.setHeader('Content-Type', 'application/json');
+
             res.send('Added successfully');
         }
 
@@ -131,24 +146,18 @@ app.post('/api/upload', (req, res) => {
 
     }
 
-    try {
+    let artworkFile = req.files.artwork;
+    artworkFile.mv(`${__dirname}/public/artwork/${req.files.artwork.name}`, err => {
 
-        let artworkFile = req.files.artwork;
-        artworkFile.mv(`${__dirname}/public/artwork/${req.files.artwork.name}`, err => {
+        if (err) {
+            return res.status(500).send({ title: 'An unexpected error occured', message: err.message });
+        } else {
+            res.send('File was uploaded successfully!');
+        }
 
-            if (err) {
-                return res.status(500).send({ title: 'An unexpected error occured', message: err.message });
-            } else {
-                res.send('File was uploaded successfully!');
-            }
-
-        });
+    });
 
 
-    } catch (error) {
-
-        errorHandler(error, req, res);
-    }
 });
 
 // Update Artwork
@@ -179,7 +188,8 @@ app.delete('/api/artwork/:title', async (req, res) => {
         const artwork = await getArtwork(req.params.title);
 
         if (artwork.url) {
-            fs.unlink(`${__dirname}/public/artwork/${artwork.url}`, (err) => {
+
+            await unlink(`${__dirname}/public/artwork/${artwork.url}`, (err) => {
                 if (err) {
                     throw err;
                 }
@@ -261,7 +271,7 @@ app.post('/api/users', async (req, res) => {
 app.post('/api/login', async (req, res, next) => {
 
     User.authenticate(req.body.username, req.body.password, (error, user) => {
-        if ( error || !user ) {
+        if (error || !user) {
             let err = new Error('User login failed');
             err.status = 401;
             return next(err);
@@ -273,10 +283,10 @@ app.post('/api/login', async (req, res, next) => {
 });
 
 app.post('/api/logout', (req, res, next) => {
-    if ( req.session ) {
+    if (req.session) {
 
         req.session.destroy((err) => {
-            if( err ) {
+            if (err) {
                 console.log(err);
                 return next(err);
             } else {
@@ -286,16 +296,20 @@ app.post('/api/logout', (req, res, next) => {
     }
 });
 
-//Custom middleware
-function requiresLogin(req, res, next){
-    if ( req.session && req.session.userId ) {
-        return next();
+app.get('/api/authenticate', (req, res, next) => {
+
+     if (req.session && req.session.userId) {
+
+        res.send("authenticated");
+
     } else {
+
         let err = new Error("You must be logged in to view this page");
-        err.staus = 401;
+        err.status = 401;
         return next(err);
     }
-}
+
+});
 
 
 // Set main html file

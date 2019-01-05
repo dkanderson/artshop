@@ -21,6 +21,7 @@ window.addEventListener('load', () => {
 
 
     var cart = [];
+    authenticate();
     loadUserNav({ username: $.cookie('user') });
     loadMainNav({ username: $.cookie('user') });
 
@@ -45,11 +46,21 @@ window.addEventListener('load', () => {
 
 
     // Display error
-    const showError = (error) => {
-        const { title, message } = error.response.data;
-        const html = errorTemplate({ class: "sdds", title, message });
-        el.html(html);
-    };
+    function showError(error) {
+
+        if (error.hasOwnProperty('response')) {
+
+            const { title, message } = error.response.data;
+            const html = errorTemplate({ class: "error", title, message });
+            el.html(html);
+
+        } else {
+
+            const html = errorTemplate({ class: "error", title: "Error", message: error.message });
+            el.html(html);
+        }
+
+    }
 
     //---------------------------------------------------------------------------------------
 
@@ -171,9 +182,9 @@ window.addEventListener('load', () => {
 
     router.add('/logout', async () => {
 
-        const response = await api.post('/logout');
+        await api.post('/logout');
 
-        $.removeCookie('user', response);
+        $.removeCookie('user');
         window.location.href = '/';
     });
 
@@ -441,20 +452,36 @@ window.addEventListener('load', () => {
 
     router.add('/add', () => {
 
-        let html = addNewTemplate();
-        el.html(html);
 
-        $('.button-upload-artwork').on('click', (event) => {
+        authenticate()
+            .then(auth => {
 
-            event.preventDefault();
+                if (auth) {
 
-            uploadArtwork();
+                    let html = addNewTemplate();
+                    el.html(html);
 
-        });
+                    $('.button-upload-artwork').on('click', (event) => {
 
-        $('.add-new-form-wrapper').hide();
+                        event.preventDefault();
 
-        $('.form-submit').click(addNewArtwork);
+                        uploadArtwork();
+
+                    });
+
+                    $('.add-new-form-wrapper').hide();
+
+                    $('.form-submit').click(addNewArtwork);
+
+                } else {
+
+                    let err = new Error('You must be logged in to view this page');
+                    err.status = 401;
+                    showError(err);
+
+                }
+
+            })
 
     });
 
@@ -584,13 +611,26 @@ window.addEventListener('load', () => {
 
     router.add('/edit', () => {
 
-        getEditList()
-            .then(() => {
+        authenticate()
+            .then(auth => {
+                if (auth) {
 
-                $('.button-edit.edit-art').on('click', (ev) => {
-                    getSelected(ev.currentTarget.dataset.title);
-                });
+                    getEditList()
+                        .then(() => {
 
+                            $('.button-edit.edit-art').on('click', (ev) => {
+                                getSelected(ev.currentTarget.dataset.title);
+                            });
+
+                        });
+
+                } else {
+
+                    let err = new Error('You must be logged in to view this page');
+                    err.status = 401;
+                    showError(err);
+
+                }
             });
 
     });
@@ -634,8 +674,25 @@ window.addEventListener('load', () => {
 
     router.add('/delete', () => {
 
-        loadArtwork()
-            .then(handleDeleteRequest)
+        authenticate()
+            .then(auth => {
+                if (auth) {
+
+                    loadArtwork()
+                        .then(handleDeleteRequest)
+                        .catch(error => {
+                            showError(error);
+                        });
+
+                } else {
+
+                    let err = new Error('You must be logged in to view this page');
+                    err.status = 401;
+                    showError(err);
+
+                }
+
+            })
             .catch(error => {
                 showError(error);
             });
@@ -751,6 +808,31 @@ window.addEventListener('load', () => {
     function loadMainNav(data) {
         let html = mainNavTemplate(data);
         $('#main-nav').html(html);
+    }
+
+    // Authenticate
+    async function authenticate() {
+
+        try {
+
+            const response = await api.get('/authenticate');
+
+            if (response.status === 200) {
+
+                return true;
+
+            } else {
+
+                $.removeCookie('user');
+                return false;
+
+            }
+
+        } catch (error) {
+
+            showError(error);
+
+        }
     }
 
 
